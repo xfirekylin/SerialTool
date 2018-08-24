@@ -59,6 +59,26 @@ private slots:
     void setResendInterval(int msc);
     void onHistoryBoxChanged(const QString &string);
 
+    void ondialButtonClicked();
+    void ongpsRunClicked();
+    void onlog2ButtonClicked();
+    void ontstButtonClicked();
+    void onurlButtonClicked();
+    void onpwoffButtonClicked();
+    void onparamButtonClicked();
+    void oncloselogClicked();
+    void onimeiButtonClicked();
+    void oniccidButtonClicked();
+    void onwriteimeiClicked();
+    void onhungButtonClicked();
+    void onrebootButtonClicked();
+    void ongpsNormalClicked();
+    void onlog1ButtonClicked();
+    void onapnButtonClicked();
+    void onopenGpsClicked();
+    void ongpsSignalClicked();
+    void onuartButtonClicked();
+
 private:
     enum TextCodec {
         ASCII,

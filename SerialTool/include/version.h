@@ -1,10 +1,10 @@
 #ifndef __VERSION_H
 #define __VERSION_H
 
-#define MAIN_VERSION      1.2.4
+#define MAIN_VERSION      1.2.5
 
 #define SOFTWARE_NAME     "SerialTool"
-#define COPYRIGHT         "Copyleft  2017-2018, Wenliang Guan"
+#define COPYRIGHT         "Copyleft  2017-2018 wwtiot"
 
 #define _STR_(s)           #s
 #define __STR(s)          _STR_(s)

@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QMessageBox>
+#include <QRegExp>
 
 TerminalView::TerminalView(QWidget *parent) :
     QWidget(parent),
@@ -27,6 +29,26 @@ TerminalView::TerminalView(QWidget *parent) :
     connect(ui->resendIntervalBox, SIGNAL(valueChanged(int)), this, SLOT(setResendInterval(int)));
     connect(ui->historyBox, SIGNAL(activated(const QString &)), this, SLOT(onHistoryBoxChanged(const QString &)));
     connect(ui->wrapLineBox, SIGNAL(stateChanged(int)), this, SLOT(onWrapBoxChanged(int)));
+
+    connect(ui->dialButton, &QPushButton::clicked, this, &TerminalView::ondialButtonClicked);
+    connect(ui->gpsRun, &QPushButton::clicked, this, &TerminalView::ongpsRunClicked);
+    connect(ui->log2Button, &QPushButton::clicked, this, &TerminalView::onlog2ButtonClicked);
+    connect(ui->tstButton, &QPushButton::clicked, this, &TerminalView::ontstButtonClicked);
+    connect(ui->urlButton, &QPushButton::clicked, this, &TerminalView::onurlButtonClicked);
+    connect(ui->pwoffButton, &QPushButton::clicked, this, &TerminalView::onpwoffButtonClicked);
+    connect(ui->paramButton, &QPushButton::clicked, this, &TerminalView::onparamButtonClicked);
+    connect(ui->closelog, &QPushButton::clicked, this, &TerminalView::oncloselogClicked);
+    connect(ui->imeiButton, &QPushButton::clicked, this, &TerminalView::onimeiButtonClicked);
+    connect(ui->iccidButton, &QPushButton::clicked, this, &TerminalView::oniccidButtonClicked);
+    connect(ui->writeimei, &QPushButton::clicked, this, &TerminalView::onwriteimeiClicked);
+    connect(ui->hungButton, &QPushButton::clicked, this, &TerminalView::onhungButtonClicked);
+    connect(ui->rebootButton, &QPushButton::clicked, this, &TerminalView::onrebootButtonClicked);
+    connect(ui->gpsNormal, &QPushButton::clicked, this, &TerminalView::ongpsNormalClicked);
+    connect(ui->log1Button, &QPushButton::clicked, this, &TerminalView::onlog1ButtonClicked);
+    connect(ui->apnButton, &QPushButton::clicked, this, &TerminalView::onapnButtonClicked);
+    connect(ui->openGps, &QPushButton::clicked, this, &TerminalView::onopenGpsClicked);
+    connect(ui->gpsSignal, &QPushButton::clicked, this, &TerminalView::ongpsSignalClicked);
+    connect(ui->uartButton, &QPushButton::clicked, this, &TerminalView::onuartButtonClicked);
 }
 
 TerminalView::~TerminalView()
@@ -71,6 +93,7 @@ void TerminalView::loadConfig(QSettings *config)
     ui->resendBox->setChecked(config->value("ResendMode").toBool());
     setResendInterval(msc);
     updateResendTimerStatus();
+    ui->rCL->setChecked(config->value("rCL").toBool());
 
     // set warp line
     status = config->value("RxAreaWrapLine").toBool();
@@ -99,7 +122,7 @@ void TerminalView::saveConfig(QSettings *config)
     config->setValue("ResendMode", QVariant(ui->resendBox->isChecked()));
     // save warp line
     config->setValue("RxAreaWrapLine", QVariant(ui->wrapLineBox->isChecked()));
-
+    config->setValue("rCL", QVariant(ui->rCL->isChecked()));
     // save history
     saveHistory(config);
 
@@ -196,9 +219,217 @@ void TerminalView::sendData()
     if (ui->portWriteAscii->isChecked() == true) {
         QTextCodec *code = QTextCodec::codecForName(m_codecName);
         array = code->fromUnicode(ui->textEditTx->text());
+        if (ui->rCL->isChecked()) {
+            array.append("\r\n");
+        }
     } else {
         array = QByteArray::fromHex(ui->textEditTx->text().toLatin1());
     }
+    sendDataRequest(array);
+}
+
+void TerminalView::onuartButtonClicked()
+{
+    QByteArray array;
+    array.append("AT^CLUR\r\n");
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "警告", "关闭串口,不能打log,是否继续?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+
+    } else {
+      return;
+    }
+
+    sendDataRequest(array);
+}
+
+void TerminalView::onimeiButtonClicked()
+{
+    QByteArray array;
+    array.append("AT+EGMR=0,7\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::ondialButtonClicked()
+{
+    QByteArray array;
+    array.append("ATD112;\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::ongpsRunClicked()
+{
+    QByteArray array;
+    array.append("AT^GPSINTV=1,");
+
+    QByteArray array_text;
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->textEditTx->text());
+
+    QRegExp rx("\\d+");
+
+    if (!rx.exactMatch(array_text)) {
+        QMessageBox Msgbox;
+        Msgbox.setText("请输入正确时间");
+        Msgbox.exec();
+        return;
+    }
+
+    array.append(array_text+"\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onlog2ButtonClicked()
+{
+    QByteArray array;
+    array.append("AT^TRAC=2\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::ontstButtonClicked(){
+    QByteArray array;
+    array.append("AT^CTST\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onurlButtonClicked(){
+    QByteArray array;
+    QByteArray array_text;
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array.append("AT^SETIP=");
+
+    array_text =code->fromUnicode(ui->textEditTx->text());
+
+    if (0 == array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("请输入IP:端口");
+        Msgbox.exec();
+        return;
+    }
+
+    array.append(array_text+"\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onpwoffButtonClicked(){
+    QByteArray array;
+    array.append("AT^PWOFF\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onparamButtonClicked(){
+    QByteArray array;
+    array.append("AT^PARAM\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::oncloselogClicked(){
+    QByteArray array;
+    array.append("AT^TRAC=0\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::oniccidButtonClicked(){
+    QByteArray array;
+    array.append("AT+ICCID\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onwriteimeiClicked(){
+    QByteArray array;
+    array.append("AT+EGMR=1,7,");
+
+    QByteArray array_text;
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->textEditTx->text());
+
+    if (15 != array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("请输入正确IMEI");
+        Msgbox.exec();
+        return;
+    }
+
+    array.append("\"" + array_text+"\"\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onhungButtonClicked(){
+    QByteArray array;
+    array.append("ATH\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onrebootButtonClicked(){
+    QByteArray array;
+    array.append("AT^RESTART\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::ongpsNormalClicked(){
+    QByteArray array;
+    array.append("AT^GPSINTV=0,");
+
+    QByteArray array_text;
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->textEditTx->text());
+
+    QRegExp rx("\\d+");
+
+    if (!rx.exactMatch(array_text)) {
+        QMessageBox Msgbox;
+        Msgbox.setText("请输入正确时间");
+        Msgbox.exec();
+        return;
+    }
+
+    array.append(array_text+"\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onlog1ButtonClicked(){
+    QByteArray array;
+    array.append("AT^TRAC=1\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onapnButtonClicked(){
+    QByteArray array;
+    array.append("AT^APN=");
+
+    QByteArray array_text;
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->textEditTx->text());
+
+
+    if (0==array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("请输入正确apn");
+        Msgbox.exec();
+        return;
+    }
+
+    array.append(array_text+"\r\n");
+
+    sendDataRequest(array);
+}
+
+void TerminalView::onopenGpsClicked(){
+    QByteArray array;
+    array.append("AT^GPST=0\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::ongpsSignalClicked(){
+    QByteArray array;
+    array.append("AT^GPST=1\r\n");
     sendDataRequest(array);
 }
 
