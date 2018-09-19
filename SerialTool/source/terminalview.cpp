@@ -33,6 +33,7 @@ TerminalView::TerminalView(QWidget *parent) :
     connect(ui->dialButton, &QPushButton::clicked, this, &TerminalView::ondialButtonClicked);
     connect(ui->gpsRun, &QPushButton::clicked, this, &TerminalView::ongpsRunClicked);
     connect(ui->log2Button, &QPushButton::clicked, this, &TerminalView::onlog2ButtonClicked);
+    connect(ui->log3Button, &QPushButton::clicked, this, &TerminalView::onlog3ButtonClicked);
     connect(ui->tstButton, &QPushButton::clicked, this, &TerminalView::ontstButtonClicked);
     connect(ui->urlButton, &QPushButton::clicked, this, &TerminalView::onurlButtonClicked);
     connect(ui->pwoffButton, &QPushButton::clicked, this, &TerminalView::onpwoffButtonClicked);
@@ -286,6 +287,13 @@ void TerminalView::onlog2ButtonClicked()
 {
     QByteArray array;
     array.append("AT^TRAC=2\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onlog3ButtonClicked()
+{
+    QByteArray array;
+    array.append("AT^TRAC=3\r\n");
     sendDataRequest(array);
 }
 

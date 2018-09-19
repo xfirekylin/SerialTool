@@ -62,6 +62,7 @@ private slots:
     void ondialButtonClicked();
     void ongpsRunClicked();
     void onlog2ButtonClicked();
+    void onlog3ButtonClicked();
     void ontstButtonClicked();
     void onurlButtonClicked();
     void onpwoffButtonClicked();
