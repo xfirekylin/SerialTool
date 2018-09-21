@@ -50,6 +50,7 @@ TerminalView::TerminalView(QWidget *parent) :
     connect(ui->openGps, &QPushButton::clicked, this, &TerminalView::onopenGpsClicked);
     connect(ui->gpsSignal, &QPushButton::clicked, this, &TerminalView::ongpsSignalClicked);
     connect(ui->uartButton, &QPushButton::clicked, this, &TerminalView::onuartButtonClicked);
+    connect(ui->wlanButton, &QPushButton::clicked, this, &TerminalView::onwlanButtonClicked);
 }
 
 TerminalView::~TerminalView()
@@ -250,6 +251,13 @@ void TerminalView::onimeiButtonClicked()
 {
     QByteArray array;
     array.append("AT+EGMR=0,7\r\n");
+    sendDataRequest(array);
+}
+
+void TerminalView::onwlanButtonClicked()
+{
+    QByteArray array;
+    array.append("AT^WLAN\r\n");
     sendDataRequest(array);
 }
 

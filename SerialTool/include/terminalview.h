@@ -79,6 +79,7 @@ private slots:
     void onopenGpsClicked();
     void ongpsSignalClicked();
     void onuartButtonClicked();
+    void onwlanButtonClicked();
 
 private:
     enum TextCodec {

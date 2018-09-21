@@ -263,24 +263,10 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
-        <widget class="QPushButton" name="urlButton">
-         <property name="text">
-          <string>设置url</string>
-         </property>
-        </widget>
-       </item>
        <item row="7" column="1">
         <widget class="QPushButton" name="gpsRun">
          <property name="text">
           <string>GPS运行间隔</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QPushButton" name="gpsSignal">
-         <property name="text">
-          <string>GPS信号</string>
          </property>
         </widget>
        </item>
@@ -291,17 +277,17 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="iccidButton">
+       <item row="8" column="1">
+        <widget class="QPushButton" name="gpsSignal">
          <property name="text">
-          <string>ICCID</string>
+          <string>GPS信号</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QPushButton" name="closelog">
+       <item row="6" column="1">
+        <widget class="QPushButton" name="urlButton">
          <property name="text">
-          <string>关log</string>
+          <string>设置url</string>
          </property>
         </widget>
        </item>
@@ -319,6 +305,13 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0">
+        <widget class="QPushButton" name="closelog">
+         <property name="text">
+          <string>关log</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="writeimei">
          <property name="text">
@@ -326,10 +319,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="log1Button">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="iccidButton">
          <property name="text">
-          <string>Log1</string>
+          <string>ICCID</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QPushButton" name="gpsNormal">
+         <property name="text">
+          <string>GPS闲时间隔</string>
          </property>
         </widget>
        </item>
@@ -347,10 +347,17 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
-        <widget class="QPushButton" name="gpsNormal">
+       <item row="8" column="0">
+        <widget class="QPushButton" name="openGps">
          <property name="text">
-          <string>GPS闲时间隔</string>
+          <string>开GPS</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QPushButton" name="log1Button">
+         <property name="text">
+          <string>Log1</string>
          </property>
         </widget>
        </item>
@@ -361,17 +368,17 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QPushButton" name="openGps">
-         <property name="text">
-          <string>开GPS</string>
-         </property>
-        </widget>
-       </item>
        <item row="9" column="0">
         <widget class="QPushButton" name="uartButton">
          <property name="text">
           <string>关闭串口</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QPushButton" name="log3Button">
+         <property name="text">
+          <string>Log3</string>
          </property>
         </widget>
        </item>
@@ -382,10 +389,10 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="log3Button">
+       <item row="10" column="0">
+        <widget class="QPushButton" name="wlanButton">
          <property name="text">
-          <string>Log3</string>
+          <string>WLAN</string>
          </property>
         </widget>
        </item>
