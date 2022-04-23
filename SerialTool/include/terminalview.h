@@ -50,6 +50,7 @@ private:
     void arrayToUTF16(QString &str, const QByteArray &array);
     void arrayToDualByte(QString &str, const QByteArray &array);
     void arrayToASCII(QString &str, const QByteArray &array);
+    void sendDataRequestEx(const QByteArray &array);
 
 private slots:
     void sendData();
@@ -80,7 +81,18 @@ private slots:
     void ongpsSignalClicked();
     void onuartButtonClicked();
     void onwlanButtonClicked();
-
+    void onResetBntClicked();
+    void onLogATClicked();
+    void onLogDiagClicked();
+    void ongetParamBtnClicked();
+    void onlogFileBntClicked();
+    void onlogOffBntClicked();
+    void onLogOnBntClicked();
+    void onsetBntClicked();
+    void onLogGpsOnClicked();
+    void onLogGpsOffClicked();
+    void onFlyOnClicked();
+    void onFlyOffClicked();
 private:
     enum TextCodec {
         ASCII,

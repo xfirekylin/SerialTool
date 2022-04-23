@@ -76,10 +76,14 @@ void SerialPort::setVisibleWidget(bool visible)
     this->setVisible(visible);
 }
 
+QString lastName;
 bool SerialPort::open()
 {
     QString name = ui->portNameBox->currentText().section(' ', 0, 0);
-
+    if (isOpen()){
+        close();
+    }
+    lastName = name;
 #if defined(Q_OS_LINUX)
     if (name.indexOf("/dev/") != 0) {
         name = "/dev/" + name;
@@ -90,6 +94,7 @@ bool SerialPort::open()
         ui->portNameBox->setEnabled(false); // 禁止更改串口
         return true;
     }
+    lastName.clear();
     QMessageBox err(QMessageBox::Critical,
         tr("Error"),
         tr("Can not open the port!\n"
@@ -101,6 +106,7 @@ bool SerialPort::open()
 
 void SerialPort::close()
 {
+    lastName.clear();
     serialPort->close();
     ui->portNameBox->setEnabled(true); // 允许更改串口
 }
@@ -159,6 +165,8 @@ void SerialPort::portSetDialog()
 void SerialPort::scanPort()
 {
     bool sync = false;
+    bool isFindLast = false;
+    int lastIndex;
     QComboBox *box = ui->portNameBox;
     QVector<QSerialPortInfo> vec;
     
@@ -180,6 +188,10 @@ void SerialPort::scanPort()
         box->clear();
         for (int i = 0; i < vec.length(); ++i) {
             QString name = vec[i].portName() + " (" + vec[i].description() + ")";
+            if (!vec[i].description().isEmpty() && lastName==vec[i].portName()){
+                isFindLast = true;
+                lastIndex = i;
+            }
             box->addItem(name);
             int width = fm.boundingRect(name).width(); // 计算字符串的像素宽度
             if (width > len) { // 统计最长字符串
@@ -187,7 +199,10 @@ void SerialPort::scanPort()
             }
         }
         // 设置当前选中的端口
-        if (!text.isEmpty() && (box->findText(text) != -1 || edited)) {
+        if (!lastName.isEmpty() && isFindLast) {
+            box->setCurrentIndex(lastIndex);
+            open();
+        } else if (!text.isEmpty() && (box->findText(text) != -1 || edited)) {
             box->setCurrentText(text);
         } else {
             box->setCurrentIndex(0);
@@ -206,7 +221,7 @@ void SerialPort::onTimerUpdate()
         if (serialPort->error() == QSerialPort::NoError) {
             return;
         }
-        emit portError();
+        //emit portError();
     }
     scanPort();
 }

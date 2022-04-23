@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QRegExp>
+#include <QDateTime>
 
 TerminalView::TerminalView(QWidget *parent) :
     QWidget(parent),
@@ -51,6 +52,18 @@ TerminalView::TerminalView(QWidget *parent) :
     connect(ui->gpsSignal, &QPushButton::clicked, this, &TerminalView::ongpsSignalClicked);
     connect(ui->uartButton, &QPushButton::clicked, this, &TerminalView::onuartButtonClicked);
     connect(ui->wlanButton, &QPushButton::clicked, this, &TerminalView::onwlanButtonClicked);
+    connect(ui->resetBtn, &QPushButton::clicked, this, &TerminalView::onResetBntClicked);
+    connect(ui->LogAT, &QPushButton::clicked, this, &TerminalView::onLogATClicked);
+    connect(ui->LogDiag, &QPushButton::clicked, this, &TerminalView::onLogDiagClicked);
+    connect(ui->getParamBtn, &QPushButton::clicked, this, &TerminalView::ongetParamBtnClicked);
+    connect(ui->logFileBtn, &QPushButton::clicked, this, &TerminalView::onlogFileBntClicked);
+    connect(ui->logOffBtn, &QPushButton::clicked, this, &TerminalView::onlogOffBntClicked);
+    connect(ui->logOnBtn, &QPushButton::clicked, this, &TerminalView::onLogOnBntClicked);
+    connect(ui->setBtn, &QPushButton::clicked, this, &TerminalView::onsetBntClicked);
+    connect(ui->logGpsOnBtn, &QPushButton::clicked, this, &TerminalView::onLogGpsOnClicked);
+    connect(ui->logGpsOffBtn, &QPushButton::clicked, this, &TerminalView::onLogGpsOffClicked);
+    connect(ui->flyOnBtn, &QPushButton::clicked, this, &TerminalView::onFlyOnClicked);
+    connect(ui->flyOffBtn, &QPushButton::clicked, this, &TerminalView::onFlyOffClicked);
 }
 
 TerminalView::~TerminalView()
@@ -173,7 +186,25 @@ void TerminalView::append(const QByteArray &array)
     } else {
         arrayToHex(string, array, 16);
     }
-    ui->textEditRx->append(string);
+    QDateTime ctm;
+    QString tm = ctm.currentDateTime().toString("\r[hh:mm:ss.zzz]收\u2190");
+    ui->textEditRx->append(tm +string);
+}
+
+void TerminalView::sendDataRequestEx(const QByteArray &array)
+{
+    QString string;
+
+    if (ui->portReadAscii->isChecked()) {
+        arrayToString(string, array);
+    } else {
+        arrayToHex(string, array, 16);
+    }
+    QDateTime ctm;
+    QString tm = ctm.currentDateTime().toString("\r[hh:mm:ss.zzz]发\u2192");
+    ui->textEditRx->append(tm +string);
+
+    sendDataRequest(array);
 }
 
 void TerminalView::clear()
@@ -227,7 +258,7 @@ void TerminalView::sendData()
     } else {
         array = QByteArray::fromHex(ui->textEditTx->text().toLatin1());
     }
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onuartButtonClicked()
@@ -244,28 +275,28 @@ void TerminalView::onuartButtonClicked()
       return;
     }
 
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onimeiButtonClicked()
 {
     QByteArray array;
     array.append("AT+EGMR=0,7\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onwlanButtonClicked()
 {
     QByteArray array;
     array.append("AT^WLAN\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::ondialButtonClicked()
 {
     QByteArray array;
     array.append("ATD112;\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::ongpsRunClicked()
@@ -288,27 +319,27 @@ void TerminalView::ongpsRunClicked()
     }
 
     array.append(array_text+"\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onlog2ButtonClicked()
 {
     QByteArray array;
     array.append("AT^TRAC=2\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onlog3ButtonClicked()
 {
     QByteArray array;
     array.append("AT^TRAC=3\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::ontstButtonClicked(){
     QByteArray array;
     array.append("AT^CTST\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onurlButtonClicked(){
@@ -328,31 +359,31 @@ void TerminalView::onurlButtonClicked(){
     }
 
     array.append(array_text+"\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onpwoffButtonClicked(){
     QByteArray array;
     array.append("AT^PWOFF\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onparamButtonClicked(){
     QByteArray array;
     array.append("AT^PARAM\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::oncloselogClicked(){
     QByteArray array;
     array.append("AT^TRAC=0\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::oniccidButtonClicked(){
     QByteArray array;
     array.append("AT+ICCID\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onwriteimeiClicked(){
@@ -372,19 +403,19 @@ void TerminalView::onwriteimeiClicked(){
     }
 
     array.append("\"" + array_text+"\"\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onhungButtonClicked(){
     QByteArray array;
     array.append("ATH\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onrebootButtonClicked(){
     QByteArray array;
     array.append("AT^RESTART\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::ongpsNormalClicked(){
@@ -406,13 +437,13 @@ void TerminalView::ongpsNormalClicked(){
     }
 
     array.append(array_text+"\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onlog1ButtonClicked(){
     QByteArray array;
     array.append("AT^TRAC=1\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onapnButtonClicked(){
@@ -434,19 +465,86 @@ void TerminalView::onapnButtonClicked(){
 
     array.append(array_text+"\r\n");
 
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onopenGpsClicked(){
     QByteArray array;
     array.append("AT^GPST=0\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
 }
 
 void TerminalView::ongpsSignalClicked(){
     QByteArray array;
     array.append("AT^GPST=1\r\n");
-    sendDataRequest(array);
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onResetBntClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>reset\r\n");
+    sendDataRequestEx(array);
+}
+void TerminalView::onLogATClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>Log2\r\n");
+    sendDataRequestEx(array);
+
+}
+void TerminalView::onLogDiagClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>Log0\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onLogGpsOnClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>Lvo2\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onLogGpsOffClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>Lvc2\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onFlyOnClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>fly1\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onFlyOffClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>fly0\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::ongetParamBtnClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>102\r\n");
+    sendDataRequestEx(array);
+}
+void TerminalView::onlogFileBntClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>Log1\r\n");
+    sendDataRequestEx(array);
+}
+void TerminalView::onlogOffBntClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>log0\r\n");
+    sendDataRequestEx(array);
+}
+void TerminalView::onLogOnBntClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>log1\r\n");
+    sendDataRequestEx(array);
+}
+void TerminalView::onsetBntClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>t1&75585200295954760&123456&112.74.76.236\r\n");
+    sendDataRequestEx(array);
 }
 
 void TerminalView::onWrapBoxChanged(int status)

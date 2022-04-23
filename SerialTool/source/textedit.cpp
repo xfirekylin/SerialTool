@@ -169,7 +169,7 @@ void TextEdit::highlightCpp()
         "wchar_t while";
 
     SendScintilla(SCI_SETLEXER, SCLEX_CPP); // C++解析器
-    SendScintilla(SCI_SETKEYWORDS, (unsigned long)0, g_szKeywords);// 设置关键字
+    SendScintilla(SCI_SETKEYWORDS, (uintptr_t)0, g_szKeywords);// 设置关键字
 
     // 下面设置各种语法元素前景色
     SendScintilla(SCI_STYLESETFORE, QsciLexerCPP::Default, 0x38312A);   // 默认
@@ -197,7 +197,7 @@ void TextEdit::highlightBash()
     }
 
     SendScintilla(SCI_SETLEXER, SCLEX_BASH); // bash解析器
-    SendScintilla(SCI_SETKEYWORDS, (unsigned long)0, keyWords.data());// 设置关键字
+    SendScintilla(SCI_SETKEYWORDS, (uintptr_t)0, keyWords.data());// 设置关键字
     // 下面设置各种语法元素前景色
     SendScintilla(SCI_STYLESETFORE, QsciLexerBash::Default, 0x38312A); // 默认
     SendScintilla(SCI_STYLESETFORE, QsciLexerBash::Keyword, 0x8B8B00);   // 关键字
@@ -216,7 +216,7 @@ void TextEdit::highlightLua()
         "if in local nil not or repeat return then true until while";
 
     SendScintilla(SCI_SETLEXER, SCLEX_LUA); // lua解析器
-    SendScintilla(SCI_SETKEYWORDS, (unsigned long)0, g_szKeywords);// 设置关键字
+    SendScintilla(SCI_SETKEYWORDS, (uintptr_t)0, g_szKeywords);// 设置关键字
     // 下面设置各种语法元素前景色
     SendScintilla(SCI_STYLESETFORE, QsciLexerLua::Default, 0x38312A); // 默认
     SendScintilla(SCI_STYLESETFORE, QsciLexerLua::Keyword, 0x8B8B00);   // 关键字
@@ -232,7 +232,7 @@ void TextEdit::highlightJSON()
     const char* g_szKeywords = "true false null";
 
     SendScintilla(SCI_SETLEXER, SCLEX_JSON); // lua解析器
-    SendScintilla(SCI_SETKEYWORDS, (unsigned long)0, g_szKeywords);// 设置关键字
+    SendScintilla(SCI_SETKEYWORDS, (uintptr_t)0, g_szKeywords);// 设置关键字
     // 下面设置各种语法元素前景色
     SendScintilla(SCI_STYLESETFORE, QsciLexerJSON::Default, 0x38312A); // 默认
     SendScintilla(SCI_STYLESETFORE, QsciLexerJSON::Keyword, 0x8B8B00);   // 关键字
