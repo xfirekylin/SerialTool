@@ -89,10 +89,21 @@ private slots:
     void onlogOffBntClicked();
     void onLogOnBntClicked();
     void onsetBntClicked();
-    void onLogGpsOnClicked();
-    void onLogGpsOffClicked();
+    void onUploadLogClicked();
+    void onGetStateClicked();
     void onFlyOnClicked();
     void onFlyOffClicked();
+    void onFactoryClicked();
+    void onDeviceInfoClicked();
+
+    void on_gpsLogOff_clicked();
+
+    void on_download_clicked();
+
+    void on_getApn_clicked();
+
+    void on_sendCmd_clicked();
+
 private:
     enum TextCodec {
         ASCII,

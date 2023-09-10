@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>924</width>
-    <height>448</height>
+    <width>936</width>
+    <height>485</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -235,6 +235,14 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="font">
+              <font>
+               <family>Monotype Corsiva</family>
+               <pointsize>10</pointsize>
+               <italic>false</italic>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="focusPolicy">
               <enum>Qt::StrongFocus</enum>
              </property>
@@ -243,7 +251,7 @@
            <item row="1" column="1">
             <widget class="QRadioButton" name="rCL">
              <property name="text">
-              <string>加回车换行</string>
+              <string>Add CRLF</string>
              </property>
             </widget>
            </item>
@@ -604,21 +612,56 @@
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="3" column="1">
+           <item row="4" column="1">
             <widget class="QPushButton" name="LogDiag">
              <property name="text">
               <string>LogDiag</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="logOnBtn">
+           <item row="7" column="1">
+            <widget class="QPushButton" name="deviceInfo">
              <property name="text">
-              <string>LogOn</string>
+              <string>DeviceInfo</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="5" column="1">
+            <widget class="QPushButton" name="uploadLogBtn">
+             <property name="text">
+              <string>uploadLog</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QPushButton" name="getstateBtn">
+             <property name="text">
+              <string>getState</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="apnPwd">
+             <property name="placeholderText">
+              <string>APN password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="2">
+            <widget class="QPushButton" name="getApn">
+             <property name="text">
+              <string>getApn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QPushButton" name="logFileBtn">
+             <property name="text">
+              <string>LogFile</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
             <widget class="QPushButton" name="LogAT">
              <property name="text">
               <string>LogAT</string>
@@ -626,13 +669,27 @@
             </widget>
            </item>
            <item row="4" column="2">
-            <widget class="QPushButton" name="logGpsOffBtn">
+            <widget class="QPushButton" name="getParamBtn">
              <property name="text">
-              <string>GpsLogOff</string>
+              <string>GetParam</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
+           <item row="6" column="2">
+            <widget class="QPushButton" name="flyOffBtn">
+             <property name="text">
+              <string>FlyOff</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QPushButton" name="flyOnBtn">
+             <property name="text">
+              <string>FlyOn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
             <widget class="QPushButton" name="setBtn">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -641,32 +698,18 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>SetParam</string>
+              <string>SetApn</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="logOffBtn">
+           <item row="2" column="1">
+            <widget class="QPushButton" name="logOnBtn">
              <property name="text">
-              <string>LogOff</string>
+              <string>LogOn</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QPushButton" name="logGpsOnBtn">
-             <property name="text">
-              <string>GpsLogOn</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="logFileBtn">
-             <property name="text">
-              <string>LogFile</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
+           <item row="8" column="1">
             <widget class="QPushButton" name="resetBtn">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -679,24 +722,182 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="2">
-            <widget class="QPushButton" name="getParamBtn">
+           <item row="9" column="1">
+            <widget class="QPushButton" name="download">
              <property name="text">
-              <string>GetParam</string>
+              <string>download</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <widget class="QPushButton" name="flyOnBtn">
+           <item row="7" column="2">
+            <widget class="QPushButton" name="factory">
              <property name="text">
-              <string>FlyOn</string>
+              <string>factory</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="2">
-            <widget class="QPushButton" name="flyOffBtn">
+           <item row="2" column="2">
+            <widget class="QPushButton" name="logOffBtn">
              <property name="text">
-              <string>FlyOff</string>
+              <string>LogOff</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="2">
+            <widget class="QPushButton" name="gpsLogOff">
+             <property name="text">
+              <string>gpsLogOff</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="APN">
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>APN</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLineEdit" name="apnUser">
+             <property name="inputMethodHints">
+              <set>Qt::ImhDigitsOnly</set>
+             </property>
+             <property name="placeholderText">
+              <string>APN user</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="1">
+            <widget class="QComboBox" name="cmdlist">
+             <item>
+              <property name="text">
+               <string>Account</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>lcd</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>aui</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>fly0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>fly1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>autoTest</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>autoCall</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>testCall5s</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>resCall</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>testonoff</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ResOnoff</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>fakeNfc</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FileM</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>batm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>formatc</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>formatd</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>formate</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>cklog</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>vplay</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>vbatPercent</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>simKey</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>assertMode</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>at2poc</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>at2ui</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="10" column="2">
+            <widget class="QPushButton" name="sendCmd">
+             <property name="text">
+              <string>sendCmd</string>
              </property>
             </widget>
            </item>

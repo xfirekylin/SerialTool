@@ -60,10 +60,12 @@ TerminalView::TerminalView(QWidget *parent) :
     connect(ui->logOffBtn, &QPushButton::clicked, this, &TerminalView::onlogOffBntClicked);
     connect(ui->logOnBtn, &QPushButton::clicked, this, &TerminalView::onLogOnBntClicked);
     connect(ui->setBtn, &QPushButton::clicked, this, &TerminalView::onsetBntClicked);
-    connect(ui->logGpsOnBtn, &QPushButton::clicked, this, &TerminalView::onLogGpsOnClicked);
-    connect(ui->logGpsOffBtn, &QPushButton::clicked, this, &TerminalView::onLogGpsOffClicked);
+    connect(ui->uploadLogBtn, &QPushButton::clicked, this, &TerminalView::onUploadLogClicked);
+    connect(ui->getstateBtn, &QPushButton::clicked, this, &TerminalView::onGetStateClicked);
     connect(ui->flyOnBtn, &QPushButton::clicked, this, &TerminalView::onFlyOnClicked);
     connect(ui->flyOffBtn, &QPushButton::clicked, this, &TerminalView::onFlyOffClicked);
+    connect(ui->deviceInfo, &QPushButton::clicked, this, &TerminalView::onDeviceInfoClicked);
+    connect(ui->factory, &QPushButton::clicked, this, &TerminalView::onFactoryClicked);
 }
 
 TerminalView::~TerminalView()
@@ -177,6 +179,7 @@ void TerminalView::setHighlight(const QString &language)
     ui->textEditRx->setHighLight(language);
 }
 
+int tvTextEnd=1;
 void TerminalView::append(const QByteArray &array)
 {
     QString string;
@@ -186,9 +189,18 @@ void TerminalView::append(const QByteArray &array)
     } else {
         arrayToHex(string, array, 16);
     }
-    QDateTime ctm;
-    QString tm = ctm.currentDateTime().toString("\r[hh:mm:ss.zzz]收\u2190");
-    ui->textEditRx->append(tm +string);
+    if (tvTextEnd){
+        QDateTime ctm;
+        QString tm = ctm.currentDateTime().toString("\r[hh:mm:ss.zzz]收\u2190");
+        ui->textEditRx->append(tm +string);
+    } else {
+         ui->textEditRx->append(string);
+    }
+    if (string.endsWith("\n")){
+        tvTextEnd = 1;
+    } else {
+        tvTextEnd = 0;
+    }
 }
 
 void TerminalView::sendDataRequestEx(const QByteArray &array)
@@ -487,25 +499,25 @@ void TerminalView::onResetBntClicked(){
 }
 void TerminalView::onLogATClicked(){
     QByteArray array;
-    array.append("AT##INRICO>Log2\r\n");
+    array.append("AT##INRICO>LogAT\r\n");
     sendDataRequestEx(array);
 
 }
 void TerminalView::onLogDiagClicked(){
     QByteArray array;
-    array.append("AT##INRICO>Log0\r\n");
+    array.append("AT##INRICO>LogDiag\r\n");
     sendDataRequestEx(array);
 }
 
-void TerminalView::onLogGpsOnClicked(){
+void TerminalView::onUploadLogClicked(){
     QByteArray array;
-    array.append("AT##INRICO>Lvo2\r\n");
+    array.append("AT##INRICO>uploadLog\r\n");
     sendDataRequestEx(array);
 }
 
-void TerminalView::onLogGpsOffClicked(){
+ void TerminalView::onGetStateClicked(){
     QByteArray array;
-    array.append("AT##INRICO>Lvc2\r\n");
+    array.append("AT##INRICO>state\r\n");
     sendDataRequestEx(array);
 }
 
@@ -528,7 +540,7 @@ void TerminalView::ongetParamBtnClicked(){
 }
 void TerminalView::onlogFileBntClicked(){
     QByteArray array;
-    array.append("AT##INRICO>Log1\r\n");
+    array.append("AT##INRICO>LogFile\r\n");
     sendDataRequestEx(array);
 }
 void TerminalView::onlogOffBntClicked(){
@@ -543,7 +555,53 @@ void TerminalView::onLogOnBntClicked(){
 }
 void TerminalView::onsetBntClicked(){
     QByteArray array;
-    array.append("AT##INRICO>t1&75585200295954760&123456&112.74.76.236\r\n");
+
+    array.append("AT##INRICO>apn&");
+
+    QByteArray array_text;
+
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->APN->text());
+    if (0==array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("please input APN");
+        Msgbox.exec();
+        return;
+    }
+    array.append(array_text+",");
+
+    array_text =code->fromUnicode(ui->apnUser->text());
+    if (0==array_text.length()) {
+
+    } else {
+        array.append(array_text);
+    }
+    array.append(",");
+
+    array_text =code->fromUnicode(ui->apnPwd->text());
+    if (0==array_text.length()) {
+
+    } else {
+        array.append(array_text);
+    }
+    array.append(",");
+
+//    QRegExp rx2 ("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+//    QRegExp rx3 ("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
+    array.append("\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onDeviceInfoClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>deviceInfo\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::onFactoryClicked(){
+    QByteArray array;
+    array.append("AT##INRICO>factory\r\n");
     sendDataRequestEx(array);
 }
 
@@ -777,4 +835,46 @@ void TerminalView::setAutoIndent(bool enable)
 void TerminalView::setIndentationGuides(bool enable)
 {
     ui->textEditTx->setIndentationGuides(enable);
+}
+
+void TerminalView::on_gpsLogOff_clicked()
+{
+    QByteArray array;
+    array.append("AT##INRICO>Lvc1\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_download_clicked()
+{
+    QByteArray array;
+    array.append("AT##INRICO>autoDl\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_getApn_clicked()
+{
+    QByteArray array;
+    array.append("AT##INRICO>getApn\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_sendCmd_clicked()
+{
+    QByteArray array;
+
+    QByteArray cmds = ui->cmdlist->currentText().toUtf8();
+    if (cmds == "simKey"){
+        array.append("AT##INRICO>simKey,2,100\r\n");
+    }else if (cmds == "assertMode"){
+        array.append("AT##INRICO>assertMode*I0,-1\r\n");
+    }else if (cmds == "at2poc"){
+        array.append("AT##INRICO>poc&AT+l\r\n");
+    }else if (cmds == "at2UI"){
+        array.append("AT##INRICO>poc>+atrsp\r\n");
+    }else if (cmds == "Account"){
+        array.append("AT##INRICO>t1&1185202675569392&123&zh.inrico.cn\r\n");
+    } else {
+        array.append("AT##INRICO>" +cmds+ "\r\n");
+    }
+    sendDataRequestEx(array);
 }
