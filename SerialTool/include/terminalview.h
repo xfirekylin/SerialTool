@@ -51,6 +51,7 @@ private:
     void arrayToDualByte(QString &str, const QByteArray &array);
     void arrayToASCII(QString &str, const QByteArray &array);
     void sendDataRequestEx(const QByteArray &array);
+    QString getCmdHead();
 
 private slots:
     void sendData();
@@ -103,6 +104,62 @@ private slots:
     void on_getApn_clicked();
 
     void on_sendCmd_clicked();
+
+    void on_relogin_clicked();
+
+    void on_keyMenu_clicked();
+
+    void on_keyUp_clicked();
+
+    void on_keyCancel_clicked();
+
+    void on_keyLeft_clicked();
+
+    void on_keyOk_clicked();
+
+    void on_keyRight_clicked();
+
+    void on_keyCall_clicked();
+
+    void on_keyDown_clicked();
+
+    void on_keyRed_clicked();
+
+    void on_key1_clicked();
+
+    void on_key2_clicked();
+
+    void on_key3_clicked();
+
+    void on_key5_clicked();
+
+    void on_key4_clicked();
+
+    void on_key6_clicked();
+
+    void on_key7_clicked();
+
+    void on_key8_clicked();
+
+    void on_key9_clicked();
+
+    void on_keyStar_clicked();
+
+    void on_key0_clicked();
+
+    void on_keyHash_clicked();
+
+    void on_keyPtt_clicked();
+
+    void on_keySos_clicked();
+
+    void on_keyHome_clicked();
+
+    void on_keyF1_clicked();
+
+    void on_keyF2_clicked();
+
+    void on_keyF3_clicked();
 
 private:
     enum TextCodec {

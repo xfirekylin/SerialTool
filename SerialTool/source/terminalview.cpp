@@ -256,6 +256,13 @@ void TerminalView::setEnabled(bool status)
     updateResendTimerStatus();
 }
 
+QString TerminalView::getCmdHead(){
+    if (ui->kHead->isChecked()){
+        return ">";
+    }
+    return "AT##INRICO>";
+}
+
 // send data
 void TerminalView::sendData()
 {
@@ -494,69 +501,69 @@ void TerminalView::ongpsSignalClicked(){
 
 void TerminalView::onResetBntClicked(){
     QByteArray array;
-    array.append("AT##INRICO>reset\r\n");
+    array.append(getCmdHead()+"reset\r\n");
     sendDataRequestEx(array);
 }
 void TerminalView::onLogATClicked(){
     QByteArray array;
-    array.append("AT##INRICO>LogAT\r\n");
+    array.append(getCmdHead()+"LogAT\r\n");
     sendDataRequestEx(array);
 
 }
 void TerminalView::onLogDiagClicked(){
     QByteArray array;
-    array.append("AT##INRICO>LogDiag\r\n");
+    array.append(getCmdHead()+"LogDiag\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::onUploadLogClicked(){
     QByteArray array;
-    array.append("AT##INRICO>uploadLog\r\n");
+    array.append(getCmdHead()+"uploadLog\r\n");
     sendDataRequestEx(array);
 }
 
  void TerminalView::onGetStateClicked(){
     QByteArray array;
-    array.append("AT##INRICO>state\r\n");
+    array.append(getCmdHead()+"state\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::onFlyOnClicked(){
     QByteArray array;
-    array.append("AT##INRICO>fly1\r\n");
+    array.append(getCmdHead()+"fly1\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::onFlyOffClicked(){
     QByteArray array;
-    array.append("AT##INRICO>fly0\r\n");
+    array.append(getCmdHead()+"fly0\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::ongetParamBtnClicked(){
     QByteArray array;
-    array.append("AT##INRICO>102\r\n");
+    array.append(getCmdHead()+"102\r\n");
     sendDataRequestEx(array);
 }
 void TerminalView::onlogFileBntClicked(){
     QByteArray array;
-    array.append("AT##INRICO>LogFile\r\n");
+    array.append(getCmdHead()+"LogFile\r\n");
     sendDataRequestEx(array);
 }
 void TerminalView::onlogOffBntClicked(){
     QByteArray array;
-    array.append("AT##INRICO>log0\r\n");
+    array.append(getCmdHead()+"log0\r\n");
     sendDataRequestEx(array);
 }
 void TerminalView::onLogOnBntClicked(){
     QByteArray array;
-    array.append("AT##INRICO>log1\r\n");
+    array.append(getCmdHead()+"log1\r\n");
     sendDataRequestEx(array);
 }
 void TerminalView::onsetBntClicked(){
     QByteArray array;
 
-    array.append("AT##INRICO>apn&");
+    array.append(getCmdHead()+"apn&");
 
     QByteArray array_text;
 
@@ -595,13 +602,13 @@ void TerminalView::onsetBntClicked(){
 
 void TerminalView::onDeviceInfoClicked(){
     QByteArray array;
-    array.append("AT##INRICO>deviceInfo\r\n");
+    array.append(getCmdHead()+"deviceInfo\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::onFactoryClicked(){
     QByteArray array;
-    array.append("AT##INRICO>factory\r\n");
+    array.append(getCmdHead()+"factory\r\n");
     sendDataRequestEx(array);
 }
 
@@ -840,21 +847,21 @@ void TerminalView::setIndentationGuides(bool enable)
 void TerminalView::on_gpsLogOff_clicked()
 {
     QByteArray array;
-    array.append("AT##INRICO>Lvc1\r\n");
+    array.append(getCmdHead()+"Lvc1\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::on_download_clicked()
 {
     QByteArray array;
-    array.append("AT##INRICO>autoDl\r\n");
+    array.append(getCmdHead()+"autoDl\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::on_getApn_clicked()
 {
     QByteArray array;
-    array.append("AT##INRICO>getApn\r\n");
+    array.append(getCmdHead()+"getApn\r\n");
     sendDataRequestEx(array);
 }
 
@@ -864,17 +871,245 @@ void TerminalView::on_sendCmd_clicked()
 
     QByteArray cmds = ui->cmdlist->currentText().toUtf8();
     if (cmds == "simKey"){
-        array.append("AT##INRICO>simKey,2,100\r\n");
+        array.append(getCmdHead()+"simKey,2,100\r\n");
     }else if (cmds == "assertMode"){
-        array.append("AT##INRICO>assertMode*I0,-1\r\n");
+        array.append(getCmdHead()+"assertMode*I0,-1\r\n");
     }else if (cmds == "at2poc"){
-        array.append("AT##INRICO>poc&AT+l\r\n");
+        array.append(getCmdHead()+"poc&AT+l\r\n");
     }else if (cmds == "at2UI"){
-        array.append("AT##INRICO>poc>+atrsp\r\n");
+        array.append(getCmdHead()+"poc>+atrsp\r\n");
     }else if (cmds == "Account"){
-        array.append("AT##INRICO>t1&1185202675569392&123&zh.inrico.cn\r\n");
+        array.append(getCmdHead()+"t1&1185202675569392&123&zh.inrico.cn\r\n");
+    } else if (cmds == "simuKeyInput"){
+        array.append(getCmdHead()+"keySimu,*#33*#,\r\n");
     } else {
-        array.append("AT##INRICO>" +cmds+ "\r\n");
+        array.append(getCmdHead()+cmds+ "\r\n");
     }
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_relogin_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("relogin\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyMenu_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,s,\r\n");
+    sendDataRequestEx(array);
+
+}
+
+void TerminalView::on_keyUp_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,u,\r\n");
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_keyCancel_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,c,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyLeft_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,L,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyOk_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,o,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyRight_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,r,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyCall_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,g,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyDown_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,d,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyRed_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,e,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key1_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,1,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key2_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,2,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key3_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,3,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key5_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,5,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key4_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,4,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key6_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,6,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key7_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,7,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key8_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,8,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key9_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,9,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyStar_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,*,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_key0_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,0,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyHash_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,#,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyPtt_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,p,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keySos_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,a,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyHome_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,h,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyF1_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,x,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyF2_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,y,\r\n");
+    sendDataRequestEx(array);
+}
+
+void TerminalView::on_keyF3_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("keySimu,z,\r\n");
     sendDataRequestEx(array);
 }
