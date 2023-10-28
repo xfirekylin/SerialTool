@@ -23,6 +23,7 @@ TerminalView::TerminalView(QWidget *parent) :
 
     setTextCodec("GB-2312"); // default
 
+    ui->POC->setFocus();
     connect(ui->wrapLineBox, SIGNAL(stateChanged(int)), this, SLOT(onWrapBoxChanged(int)));
     connect(ui->sendButton, &QPushButton::clicked, this, &TerminalView::onSendButtonClicked);
     connect(ui->resendBox, &QCheckBox::stateChanged, this, &TerminalView::updateResendTimerStatus);
