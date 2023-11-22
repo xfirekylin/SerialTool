@@ -104,4 +104,11 @@ FORMS += \
     ui/mainwindow.ui \
     ui/filetransmitview.ui
 
-LIBS += -lqscintilla2_qt5
+
+
+win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/Qt5.12.12/5.12.12/mingw73_64/lib/ -lqscintilla2_qt5
+else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/Qt5.12.12/5.12.12/mingw73_64/lib/ -lqscintilla2_qt5d
+else:unix: LIBS += -LD:/Qt/Qt5.12.12/5.12.12/mingw73_64/lib/ -lqscintilla2_qt5
+
+INCLUDEPATH += D:/Qt/Qt5.12.12/5.12.12/mingw73_64/include
+DEPENDPATH += D:/Qt/Qt5.12.12/5.12.12/mingw73_64/include

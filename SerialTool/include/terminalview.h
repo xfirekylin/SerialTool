@@ -52,6 +52,8 @@ private:
     void arrayToASCII(QString &str, const QByteArray &array);
     void sendDataRequestEx(const QByteArray &array);
     QString getCmdHead();
+    void convertHexStr2Lcdmem(const QString &hex, int offset);
+    void displayLcdScreen();
 
 private slots:
     void sendData();
@@ -161,6 +163,8 @@ private slots:
 
     void on_keyF3_clicked();
 
+    void on_lcdfresh_clicked();
+
 private:
     enum TextCodec {
         ASCII,
@@ -176,6 +180,9 @@ private:
     QByteArray *m_asciiBuf;
     enum TextCodec m_textCodec;
     QByteArray m_codecName;
+    uchar *lcdbuf;
+    QString lcdLineStr;
+    int recvlcdline;
 };
 
 #endif // TERMINALVIEW_H

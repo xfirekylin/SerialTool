@@ -14,7 +14,9 @@ TerminalView::TerminalView(QWidget *parent) :
     ui(new Ui::TerminalView)
 {
     ui->setupUi(this);
-
+    lcdbuf = new uchar[240*320*2];
+    memset(lcdbuf, 0, 240*320*2);
+    recvlcdline = 0;
     m_resendTimer = new QTimer;
     m_asciiBuf = new QByteArray;
 
@@ -194,10 +196,30 @@ void TerminalView::append(const QByteArray &array)
         QDateTime ctm;
         QString tm = ctm.currentDateTime().toString("\r[hh:mm:ss.zzz]收\u2190");
         ui->textEditRx->append(tm +string);
+        lcdLineStr.clear();
+        lcdLineStr.append(string);
     } else {
-         ui->textEditRx->append(string);
+        lcdLineStr.append(string);
+        ui->textEditRx->append(string);
     }
     if (string.endsWith("\n")){
+        QStringList lcdLines = lcdLineStr.split("\r\n");
+        for(int i=0;i<lcdLines.size();i++){
+            lcdLineStr = lcdLines.at(i);
+            int idx = lcdLineStr.indexOf("*#lcdbuf#*:");
+            if (-1 != idx){
+                lcdLineStr = lcdLineStr.mid(idx+strlen("*#lcdbuf#*:"));
+                if (lcdLineStr.endsWith("\r\n")){
+                    lcdLineStr.truncate(lcdLineStr.length() - 2);
+                }
+
+                QStringList vl = lcdLineStr.split(":");
+                if (2==vl.size() && 400==vl.at(1).length()){
+                    int offset = vl.at(0).toInt();
+                    convertHexStr2Lcdmem(vl.at(1), offset);
+                }
+            }
+        }
         tvTextEnd = 1;
     } else {
         tvTextEnd = 0;
@@ -271,7 +293,14 @@ void TerminalView::sendData()
 
     if (ui->portWriteAscii->isChecked() == true) {
         QTextCodec *code = QTextCodec::codecForName(m_codecName);
-        array = code->fromUnicode(ui->textEditTx->text());
+        QString in = ui->textEditTx->text();
+        if (ui->kHead->isChecked()){
+            if (in.startsWith("AT##INRICO>"))
+                in = in.mid(strlen("AT##INRICO"));
+        }
+
+        array = code->fromUnicode(in);
+
         if (ui->rCL->isChecked()) {
             array.append("\r\n");
         }
@@ -624,14 +653,14 @@ void TerminalView::onSendButtonClicked()
     if (!str.isEmpty()) {
         sendData();
 
-        // 历史记录下拉列表删除多余项
-        while (ui->historyBox->count() >= 20) {
-            ui->historyBox->removeItem(19);
-        }
         // 数据写入历史记录下拉列表
         int i = ui->historyBox->findText(str);
         if (i != -1) { // 存在的项先删除
             ui->historyBox->removeItem(i);
+        }
+        // 历史记录下拉列表删除多余项
+        while (ui->historyBox->count() >= 20) {
+            ui->historyBox->removeItem(19);
         }
         ui->historyBox->insertItem(0, str); // 数据添加到第0个元素
         ui->historyBox->setCurrentIndex(0);
@@ -1114,3 +1143,36 @@ void TerminalView::on_keyF3_clicked()
     array.append("keySimu,z,\r\n");
     sendDataRequestEx(array);
 }
+
+void TerminalView::convertHexStr2Lcdmem(const QString &src, int offset){
+    int len = 200;
+    QByteArray ba = QByteArray::fromHex(src.toStdString().data());
+    if (len > ba.size()){
+        len = ba.size();
+    }
+
+    recvlcdline++;
+    memcpy(lcdbuf+offset, ba.data(), len);
+    if (153400==offset){
+        displayLcdScreen();
+        recvlcdline = 0;
+    }
+}
+
+void TerminalView::displayLcdScreen()
+{
+    // Load the image data into the bytes array
+
+    QImage image((uchar *)lcdbuf, 240, 320, QImage::Format_RGB16);
+    ui->lcd->setPixmap(QPixmap::fromImage(image));
+    ui->lcd->show();
+}
+
+void TerminalView::on_lcdfresh_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("lcdBuf\r\n");
+    sendDataRequestEx(array);
+}
+
