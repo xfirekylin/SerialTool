@@ -106,9 +106,10 @@ FORMS += \
 
 
 
-win32:CONFIG(release, debug|release): LIBS += -LD:/Qt/Qt5.12.12/5.12.12/mingw73_64/lib/ -lqscintilla2_qt5
-else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Qt/Qt5.12.12/5.12.12/mingw73_64/lib/ -lqscintilla2_qt5d
-else:unix: LIBS += -LD:/Qt/Qt5.12.12/5.12.12/mingw73_64/lib/ -lqscintilla2_qt5
 
-INCLUDEPATH += D:/Qt/Qt5.12.12/5.12.12/mingw73_64/include
-DEPENDPATH += D:/Qt/Qt5.12.12/5.12.12/mingw73_64/include
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./ -lqscintilla2_qt5
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./ -lqscintilla2_qt5d
+else:unix: LIBS += -L$$PWD/./ -lqscintilla2_qt5
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
