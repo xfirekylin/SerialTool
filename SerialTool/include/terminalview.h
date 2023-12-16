@@ -54,6 +54,8 @@ private:
     QString getCmdHead();
     void convertHexStr2Lcdmem(const QString &hex, int offset);
     void displayLcdScreen();
+    void SaveBinFile();
+
 
 private slots:
     void sendData();

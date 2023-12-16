@@ -172,6 +172,46 @@
        <string notr="true">460800</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>500000</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>512000</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>600000</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>750000</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>921600</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1000000</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1500000</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2000000</string>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>
