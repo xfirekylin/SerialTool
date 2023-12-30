@@ -550,7 +550,7 @@ void TerminalView::onLogDiagClicked(){
 
 void TerminalView::onUploadLogClicked(){
     QByteArray array;
-    array.append(getCmdHead()+"uploadLog\r\n");
+    array.append(getCmdHead()+"sosConfig\r\n");
     sendDataRequestEx(array);
 }
 
@@ -562,13 +562,13 @@ void TerminalView::onUploadLogClicked(){
 
 void TerminalView::onFlyOnClicked(){
     QByteArray array;
-    array.append(getCmdHead()+"fly1\r\n");
+    array.append(getCmdHead()+"patrolInfo\r\n");
     sendDataRequestEx(array);
 }
 
 void TerminalView::onFlyOffClicked(){
     QByteArray array;
-    array.append(getCmdHead()+"fly0\r\n");
+    array.append(getCmdHead()+"gpsInfo\r\n");
     sendDataRequestEx(array);
 }
 
@@ -1969,3 +1969,12 @@ void TerminalView::SaveBinFile() {
     file.close();
 
 }
+
+void TerminalView::on_recInfo_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("recInfo\r\n");
+    sendDataRequestEx(array);
+}
+

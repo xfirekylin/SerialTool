@@ -167,6 +167,8 @@ private slots:
 
     void on_lcdfresh_clicked();
 
+    void on_recInfo_clicked();
+
 private:
     enum TextCodec {
         ASCII,
