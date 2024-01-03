@@ -568,7 +568,7 @@ void TerminalView::onFlyOnClicked(){
 
 void TerminalView::onFlyOffClicked(){
     QByteArray array;
-    array.append(getCmdHead()+"gpsInfo\r\n");
+    array.append(getCmdHead()+"gpsinfo\r\n");
     sendDataRequestEx(array);
 }
 
