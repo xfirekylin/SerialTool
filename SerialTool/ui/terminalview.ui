@@ -620,9 +620,12 @@
          <item row="0" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0">
+            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="1,1">
              <property name="sizeConstraint">
               <enum>QLayout::SetNoConstraint</enum>
+             </property>
+             <property name="horizontalSpacing">
+              <number>2</number>
              </property>
              <item row="1" column="0">
               <widget class="QLineEdit" name="apnPwd">
@@ -637,42 +640,19 @@
                </property>
               </widget>
              </item>
-             <item row="9" column="0">
-              <widget class="QPushButton" name="download">
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="apnUser">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <property name="text">
-                <string>download</string>
+               <property name="inputMethodHints">
+                <set>Qt::ImhDigitsOnly</set>
                </property>
-              </widget>
-             </item>
-             <item row="6" column="1">
-              <widget class="QPushButton" name="flyOffBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>gpsInfo</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QPushButton" name="getParamBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>GetParam</string>
+               <property name="placeholderText">
+                <string>APN user</string>
                </property>
               </widget>
              </item>
@@ -689,78 +669,19 @@
                </property>
               </widget>
              </item>
-             <item row="9" column="1">
-              <widget class="QPushButton" name="getApn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>getApn</string>
-               </property>
-              </widget>
-             </item>
-             <item row="10" column="1">
-              <widget class="QPushButton" name="sendCmd">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>sendCmd</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QPushButton" name="logOffBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>LogOff</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
-              <widget class="QPushButton" name="uploadLogBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>sosConfig</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QPushButton" name="logFileBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>LogFile</string>
-               </property>
-              </widget>
-             </item>
              <item row="10" column="0">
               <widget class="QComboBox" name="cmdlist">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
                </property>
                <item>
                 <property name="text">
@@ -932,39 +853,20 @@
                  <string>memGet,0,1</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>9memSet,addr,42135,val</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>9execFunc,4,addr,vi,23</string>
+                </property>
+               </item>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="QPushButton" name="setBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>SetApn</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLineEdit" name="APN">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="inputMask">
-                <string/>
-               </property>
-               <property name="placeholderText">
-                <string>APN</string>
-               </property>
-              </widget>
-             </item>
-             <item row="11" column="0">
-              <widget class="QPushButton" name="relogin">
+             <item row="4" column="0">
+              <widget class="QPushButton" name="LogDiag">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -972,12 +874,12 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>relogin</string>
+                <string>LogDiag</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="LogAT">
+             <item row="6" column="1">
+              <widget class="QPushButton" name="flyOffBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -985,20 +887,20 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>LogAT</string>
+                <string>gpsInfo</string>
                </property>
               </widget>
              </item>
-             <item row="8" column="0">
-              <widget class="QPushButton" name="resetBtn">
+             <item row="9" column="1">
+              <widget class="QPushButton" name="getApn">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Reset</string>
+                <string>getApn</string>
                </property>
               </widget>
              </item>
@@ -1015,24 +917,8 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="apnUser">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="inputMethodHints">
-                <set>Qt::ImhDigitsOnly</set>
-               </property>
-               <property name="placeholderText">
-                <string>APN user</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QPushButton" name="getstateBtn">
+             <item row="9" column="0">
+              <widget class="QPushButton" name="download">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -1040,20 +926,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>getState</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QPushButton" name="flyOnBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>patrolInfo</string>
+                <string>download</string>
                </property>
               </widget>
              </item>
@@ -1086,8 +959,37 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QPushButton" name="LogDiag">
+             <item row="8" column="0">
+              <widget class="QPushButton" name="resetBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Reset</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLineEdit" name="APN">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="inputMask">
+                <string/>
+               </property>
+               <property name="placeholderText">
+                <string>APN</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QPushButton" name="uploadLogBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -1095,7 +997,150 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>LogDiag</string>
+                <string>sosConfig</string>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="1">
+              <widget class="QPushButton" name="sendCmd">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>sendCmd</string>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="1">
+              <widget class="QPushButton" name="setIP">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>setIP</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QPushButton" name="getParamBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>GetParam</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QPushButton" name="logFileBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>LogFile</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QPushButton" name="getstateBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>getState</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="setBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>SetApn</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="LogAT">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>LogAT</string>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="0">
+              <widget class="QPushButton" name="relogin">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>relogin</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="logOffBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>LogOff</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QPushButton" name="flyOnBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>patrolInfo</string>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="0">
+              <widget class="QPushButton" name="GrpInfo">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>groupInfo</string>
                </property>
               </widget>
              </item>

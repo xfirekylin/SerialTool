@@ -603,12 +603,10 @@ void TerminalView::onsetBntClicked(){
 
     array_text =code->fromUnicode(ui->APN->text());
     if (0==array_text.length()) {
-        QMessageBox Msgbox;
-        Msgbox.setText("please input APN");
-        Msgbox.exec();
-        return;
+        array.append(array_text+",");
+    } else {
+        array.append(",");
     }
-    array.append(array_text+",");
 
     array_text =code->fromUnicode(ui->apnUser->text());
     if (0==array_text.length()) {
@@ -1975,6 +1973,49 @@ void TerminalView::on_recInfo_clicked()
     QByteArray array;
     array.append(getCmdHead());
     array.append("recInfo\r\n");
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_setIP_clicked()
+{
+    QByteArray array;
+
+    array.append(getCmdHead()+"101&");
+
+    QByteArray array_text;
+
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->APN->text());
+    if (0!=array_text.length()) {
+        array.append(array_text);
+    }
+
+     array.append("&&4G&en&lcn&410.304&0&0&0&");
+
+    array_text =code->fromUnicode(ui->apnUser->text());
+    if (0==array_text.length()) {
+
+    } else {
+        array.append(array_text);
+    }
+
+    array.append("&T529");
+
+
+//    QRegExp rx2 ("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+//    QRegExp rx3 ("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
+    array.append("\r\n");
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_GrpInfo_clicked()
+{
+    QByteArray array;
+    array.append(getCmdHead());
+    array.append("grpInfo\r\n");
     sendDataRequestEx(array);
 }
 

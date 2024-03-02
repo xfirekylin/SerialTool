@@ -169,6 +169,10 @@ private slots:
 
     void on_recInfo_clicked();
 
+    void on_setIP_clicked();
+
+    void on_GrpInfo_clicked();
+
 private:
     enum TextCodec {
         ASCII,
