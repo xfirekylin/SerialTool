@@ -620,7 +620,7 @@
          <item row="0" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="1,1">
+            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="1,1">
              <property name="sizeConstraint">
               <enum>QLayout::SetNoConstraint</enum>
              </property>
@@ -1141,6 +1141,120 @@
                </property>
                <property name="text">
                 <string>groupInfo</string>
+               </property>
+              </widget>
+             </item>
+             <item row="13" column="0">
+              <widget class="QComboBox" name="logList">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>rmlog</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>gps</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>adups</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>mmidebug</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>at</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>mmi</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>tts</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>poc</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>err</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>fence</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>heart</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>dmr</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="13" column="1">
+              <widget class="QPushButton" name="logOff">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>logOff</string>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="1">
+              <widget class="QPushButton" name="logon">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>logOn</string>
                </property>
               </widget>
              </item>

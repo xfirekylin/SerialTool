@@ -173,6 +173,10 @@ private slots:
 
     void on_GrpInfo_clicked();
 
+    void on_logon_clicked();
+
+    void on_logOff_clicked();
+
 private:
     enum TextCodec {
         ASCII,

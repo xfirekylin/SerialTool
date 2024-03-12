@@ -2019,3 +2019,27 @@ void TerminalView::on_GrpInfo_clicked()
     sendDataRequestEx(array);
 }
 
+
+void TerminalView::on_logon_clicked()
+{
+    QByteArray array;
+
+    int index = ui->logList->currentIndex();
+
+     array.append(getCmdHead()+"Lvo"+QString::number(index)+ "\r\n");
+
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_logOff_clicked()
+{
+    QByteArray array;
+
+    int index = ui->logList->currentIndex();
+
+     array.append(getCmdHead()+"Lvc"+QString::number(index)+ "\r\n");
+
+    sendDataRequestEx(array);
+}
+
