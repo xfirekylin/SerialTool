@@ -127,8 +127,28 @@
      <property name="text">
       <string notr="true"/>
      </property>
+     <property name="maxLength">
+      <number>6</number>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="localPort">
+     <property name="text">
+      <string>Local Port</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="localPortEdit">
+     <property name="maxLength">
+      <number>6</number>
+     </property>
+     <property name="placeholderText">
+      <string>64000 module 65500 AT</string>
      </property>
     </widget>
    </item>

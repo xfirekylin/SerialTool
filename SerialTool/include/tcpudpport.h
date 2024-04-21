@@ -59,6 +59,10 @@ private slots:
     void removeUserFormList();
     void onError();
 
+    void on_portEdit_editingFinished();
+
+    void on_protocolBox_currentIndexChanged(int index);
+
 private:
     Ui::TcpUdpPort *ui;
     QTcpSocket *tcpClient = NULL;

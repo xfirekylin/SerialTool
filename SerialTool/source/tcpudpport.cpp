@@ -11,11 +11,12 @@ TcpUdpPort::TcpUdpPort(QWidget *parent) :
     ui->setupUi(this);
 
     QRegExp regExpIP("localhost|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])[\\.]){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])");
-    QRegExp regExpNetPort("((6553[0-5])|[655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[0-9])");
+    QRegExp regExpNetPort("^([0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$");
     QRegExpValidator *pReg = new QRegExpValidator(regExpIP, this);
     ui->ipEdit->setValidator(pReg);
     pReg = new QRegExpValidator(regExpNetPort, this);
     ui->portEdit->setValidator(pReg);
+    ui->localPortEdit->setValidator(pReg);
 
     protocolChanged();
 
@@ -74,14 +75,20 @@ void TcpUdpPort::onProtocolChanged()
         protocol = TCPClient;
         ui->ipEdit->setReadOnly(false);
         ui->ipEdit->setText(serverIP);
+        ui->localPort->setVisible(true);
+        ui->localPortEdit->setVisible(true);
     } else if (protocolName == "TCP Server") {
         protocol = TCPServer;
         ui->ipEdit->setReadOnly(true);
         ui->ipEdit->setText(localHost());
+        ui->localPort->setVisible(false);
+        ui->localPortEdit->setVisible(false);
     } else if (protocolName == "UDP") {
         protocol = UDP;
         ui->ipEdit->setReadOnly(false);
         ui->ipEdit->setText(serverIP);
+        ui->localPort->setVisible(false);
+        ui->localPortEdit->setVisible(false);
     }
     emit protocolChanged();
 }
@@ -110,6 +117,9 @@ bool TcpUdpPort::openTcpClient()
         return false; // Returns false when the IP address or port number is wrong.
     }
     tcpClient = new QTcpSocket();
+    if (!ui->localPortEdit->text().isEmpty()){
+        tcpClient->bind(hostAddress(), ui->localPortEdit->text().toInt());
+    }
     tcpClient->connectToHost(hostAddress(), ui->portEdit->text().toInt());
     if (!tcpClient->waitForConnected(1000)) {
         tcpClient->close();
@@ -361,3 +371,15 @@ void TcpUdpPort::onError()
     err.exec();
     emit connectionError();
 }
+
+void TcpUdpPort::on_portEdit_editingFinished()
+{
+
+}
+
+
+void TcpUdpPort::on_protocolBox_currentIndexChanged(int index)
+{
+
+}
+
