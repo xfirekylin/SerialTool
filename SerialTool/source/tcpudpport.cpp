@@ -59,6 +59,8 @@ void TcpUdpPort::setVisibleWidget(bool status)
     ui->ipEdit->setVisible(status);
     ui->label_2->setVisible(status);
     ui->portEdit->setVisible(status);
+    ui->localPort->setVisible(status);
+    ui->localPortEdit->setVisible(status);
     setVisible(status);
 }
 
