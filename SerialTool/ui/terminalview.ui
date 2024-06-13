@@ -863,6 +863,21 @@
                  <string>9execFunc,4,addr,vi,23</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>hearttm</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>boottm</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>nfcSwitch,2</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item row="4" column="0">

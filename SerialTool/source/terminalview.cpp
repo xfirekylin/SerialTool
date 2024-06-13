@@ -1992,7 +1992,7 @@ void TerminalView::on_setIP_clicked()
         array.append(array_text);
     }
 
-     array.append("&&4G&en&lcn&410.304&0&0&0&");
+     array.append("&&4G&en&lcn&410.304&1&1&1&");
 
     array_text =code->fromUnicode(ui->apnUser->text());
     if (0==array_text.length()) {
@@ -2001,7 +2001,7 @@ void TerminalView::on_setIP_clicked()
         array.append(array_text);
     }
 
-    array.append("&T529");
+    array.append("&T529&1");
 
 
 //    QRegExp rx2 ("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
