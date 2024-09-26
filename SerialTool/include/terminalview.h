@@ -52,6 +52,7 @@ private:
     void arrayToASCII(QString &str, const QByteArray &array);
     void sendDataRequestEx(const QByteArray &array);
     QString getCmdHead();
+    QString getKeyEventType();
     void convertHexStr2Lcdmem(const QString &hex, int offset);
     void displayLcdScreen();
     void SaveBinFile();
@@ -176,6 +177,10 @@ private slots:
     void on_logon_clicked();
 
     void on_logOff_clicked();
+
+    void on_lcdClear_clicked();
+
+    void on_memGetSet_clicked();
 
 private:
     enum TextCodec {

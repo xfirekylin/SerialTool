@@ -288,6 +288,14 @@ QString TerminalView::getCmdHead(){
     return "AT##INRICO>";
 }
 
+QString TerminalView::getKeyEventType(){
+    if (ui->keyEvent->currentText() == "press"){
+        return ",1\r\n";
+    } else if (ui->keyEvent->currentText() == "release"){
+        return ",0\r\n";
+    }
+    return ",\r\n";
+}
 // send data
 void TerminalView::sendData()
 {
@@ -929,8 +937,9 @@ void TerminalView::on_relogin_clicked()
 void TerminalView::on_keyMenu_clicked()
 {
     QByteArray array;
+
     array.append(getCmdHead());
-    array.append("keySimu,s,\r\n");
+    array.append("keySimu,s"+getKeyEventType());
     sendDataRequestEx(array);
 
 }
@@ -939,7 +948,7 @@ void TerminalView::on_keyUp_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,u,\r\n");
+    array.append("keySimu,u"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -948,7 +957,7 @@ void TerminalView::on_keyCancel_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,c,\r\n");
+    array.append("keySimu,c"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -956,7 +965,7 @@ void TerminalView::on_keyLeft_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,L,\r\n");
+    array.append("keySimu,L"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -964,7 +973,7 @@ void TerminalView::on_keyOk_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,o,\r\n");
+    array.append("keySimu,o"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -972,7 +981,7 @@ void TerminalView::on_keyRight_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,r,\r\n");
+    array.append("keySimu,r"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -980,7 +989,7 @@ void TerminalView::on_keyCall_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,g,\r\n");
+    array.append("keySimu,g"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -988,7 +997,7 @@ void TerminalView::on_keyDown_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,d,\r\n");
+    array.append("keySimu,d"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -996,7 +1005,7 @@ void TerminalView::on_keyRed_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,e,\r\n");
+    array.append("keySimu,e"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1004,7 +1013,7 @@ void TerminalView::on_key1_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,1,\r\n");
+    array.append("keySimu,1"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1012,7 +1021,7 @@ void TerminalView::on_key2_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,2,\r\n");
+    array.append("keySimu,2"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1020,7 +1029,7 @@ void TerminalView::on_key3_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,3,\r\n");
+    array.append("keySimu,3"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1028,7 +1037,7 @@ void TerminalView::on_key5_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,5,\r\n");
+    array.append("keySimu,5"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1036,7 +1045,7 @@ void TerminalView::on_key4_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,4,\r\n");
+    array.append("keySimu,4"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1044,7 +1053,7 @@ void TerminalView::on_key6_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,6,\r\n");
+    array.append("keySimu,6"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1052,7 +1061,7 @@ void TerminalView::on_key7_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,7,\r\n");
+    array.append("keySimu,7"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1060,7 +1069,7 @@ void TerminalView::on_key8_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,8,\r\n");
+    array.append("keySimu,8"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1068,7 +1077,7 @@ void TerminalView::on_key9_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,9,\r\n");
+    array.append("keySimu,9"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1076,7 +1085,7 @@ void TerminalView::on_keyStar_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,*,\r\n");
+    array.append("keySimu,*"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1084,7 +1093,7 @@ void TerminalView::on_key0_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,0,\r\n");
+    array.append("keySimu,0"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1092,7 +1101,7 @@ void TerminalView::on_keyHash_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,#,\r\n");
+    array.append("keySimu,#"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1100,7 +1109,7 @@ void TerminalView::on_keyPtt_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,p,\r\n");
+    array.append("keySimu,p"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1108,7 +1117,7 @@ void TerminalView::on_keySos_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,a,\r\n");
+    array.append("keySimu,a"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1116,7 +1125,7 @@ void TerminalView::on_keyHome_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,h,\r\n");
+    array.append("keySimu,h"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1124,7 +1133,7 @@ void TerminalView::on_keyF1_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,x,\r\n");
+    array.append("keySimu,x"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1132,7 +1141,7 @@ void TerminalView::on_keyF2_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,y,\r\n");
+    array.append("keySimu,y"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -1140,7 +1149,7 @@ void TerminalView::on_keyF3_clicked()
 {
     QByteArray array;
     array.append(getCmdHead());
-    array.append("keySimu,z,\r\n");
+    array.append("keySimu,z,"+getKeyEventType());
     sendDataRequestEx(array);
 }
 
@@ -2039,6 +2048,52 @@ void TerminalView::on_logOff_clicked()
     int index = ui->logList->currentIndex();
 
      array.append(getCmdHead()+"Lvc"+QString::number(index)+ "\r\n");
+
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_lcdClear_clicked()
+{
+      memset(lcdbuf, 0x12, 240*320*2);
+      displayLcdScreen();
+}
+
+
+void TerminalView::on_memGetSet_clicked()
+{
+    QByteArray array;
+    int varType = 4;
+    if (ui->memType->currentText() == "uint32"){
+        varType = 4;
+    } else if (ui->memType->currentText() == "uint16"){
+        varType = 2;
+    } else if (ui->memType->currentText() == "uint8"){
+        varType = 1;
+    } else if (ui->memType->currentText() == "float"){
+        varType = 3;
+    } else if (ui->memType->currentText() == "double"){
+        varType = 5;
+    }
+
+    QByteArray array_text;
+    QByteArray array_text2;
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->apnUser->text());
+    if (0==array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("apnUser输入十六进制地址：xx");
+        Msgbox.exec();
+        return;
+    }
+    array.append(getCmdHead());
+    array_text2 =code->fromUnicode(ui->apnPwd->text());
+    if (0==array_text2.length()) {
+        array.append("memGet," + array_text+ "," + QString::number(varType) + "\r\n");
+    } else {
+        array.append("memSet," + array_text+ "," + QString::number(varType) + "," + array_text2 + "\r\n");
+    }
 
     sendDataRequestEx(array);
 }
