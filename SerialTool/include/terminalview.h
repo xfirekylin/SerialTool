@@ -182,6 +182,10 @@ private slots:
 
     void on_memGetSet_clicked();
 
+    void on_tmpIp_clicked();
+
+    void on_setLang_clicked();
+
 private:
     enum TextCodec {
         ASCII,

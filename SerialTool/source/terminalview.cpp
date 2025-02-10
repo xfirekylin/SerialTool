@@ -920,6 +920,45 @@ void TerminalView::on_sendCmd_clicked()
         array.append(getCmdHead()+"t1&1185202675569392&123&zh.inrico.cn\r\n");
     } else if (cmds == "simuKeyInput"){
         array.append(getCmdHead()+"keySimu,*#33*#,\r\n");
+    } else if (cmds == "autoCall5590"){
+        QString cmdout = getCmdHead()+"autoCall,5000,5000,90000,";
+
+        QTextCodec *code = QTextCodec::codecForName(m_codecName);
+        QByteArray array_text =code->fromUnicode(ui->apnPwd->text());
+        if (0==array_text.length()) {
+            array.append(cmdout);
+        } else {
+            int totalTime = 100000;
+            int sendTime = array_text.toInt();
+            if (sendTime*2>=totalTime){
+                QMessageBox Msgbox;
+                Msgbox.setText("time err.");
+                Msgbox.exec();
+                return;
+            }
+            cmdout.sprintf("autoCall,%d,%d,%d,", sendTime,sendTime,totalTime-sendTime*2);
+            array.append(getCmdHead()+cmdout);
+        }
+        array_text =code->fromUnicode(ui->APN->text());
+        if (0==array_text.length()) {
+            QMessageBox Msgbox;
+            Msgbox.setText("Please enter the group ID in the APN textbox to send calls.");
+            Msgbox.exec();
+            return;
+        } else {
+            array.append(array_text+",");
+        }
+
+        array_text =code->fromUnicode(ui->apnUser->text());
+        if (0==array_text.length()) {
+            QMessageBox Msgbox;
+            Msgbox.setText("Please enter the group ID in the apnUser textbox to receive calls.");
+            Msgbox.exec();
+            return;
+        } else {
+            array.append(array_text+",");
+        }
+        array.append("\r\n");
     } else {
         array.append(getCmdHead()+cmds+ "\r\n");
     }
@@ -2095,6 +2134,70 @@ void TerminalView::on_memGetSet_clicked()
         array.append("memSet," + array_text+ "," + QString::number(varType) + "," + array_text2 + "\r\n");
     }
 
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_tmpIp_clicked()
+{
+    QByteArray array;
+
+    array.append(getCmdHead()+"t1&");
+
+    QByteArray array_text;
+
+
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->apnUser->text());
+    if (0==array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("no imei");
+        Msgbox.exec();
+        return;
+    } else {
+        array.append(array_text);
+    }
+
+     array.append("&123&");
+
+    array_text =code->fromUnicode(ui->APN->text());
+    if (0==array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("no ip");
+        Msgbox.exec();
+        return;
+    } else {
+        array.append(array_text);
+    }
+
+    array.append("\r\n");
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_setLang_clicked()
+{
+    QByteArray array;
+
+    array.append(getCmdHead()+"setlang,");
+
+    QByteArray array_text;
+
+
+    QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+    array_text =code->fromUnicode(ui->APN->text());
+    if (0==array_text.length()) {
+        QMessageBox Msgbox;
+        Msgbox.setText("input lang code in APN textbox");
+        Msgbox.exec();
+        return;
+    } else {
+        array.append(array_text);
+    }
+
+    array.append(",\r\n");
     sendDataRequestEx(array);
 }
 
