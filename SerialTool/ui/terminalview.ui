@@ -654,6 +654,12 @@
                  <height>0</height>
                 </size>
                </property>
+               <property name="font">
+                <font>
+                 <family>Microsoft YaHei</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <item>
                 <property name="text">
                  <string>Account</string>
@@ -681,12 +687,27 @@
                </item>
                <item>
                 <property name="text">
+                 <string>fota</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>fotaA</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>autoTest</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>autoCall</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>capacity</string>
                 </property>
                </item>
                <item>
@@ -1121,7 +1142,7 @@
                 </sizepolicy>
                </property>
                <property name="placeholderText">
-                <string>APN password</string>
+                <string>APNpwd/val</string>
                </property>
               </widget>
              </item>
@@ -1185,7 +1206,7 @@
                 <set>Qt::ImhDigitsOnly</set>
                </property>
                <property name="placeholderText">
-                <string>APN user/imei/in</string>
+                <string>APNu/addr/imei/in</string>
                </property>
               </widget>
              </item>
