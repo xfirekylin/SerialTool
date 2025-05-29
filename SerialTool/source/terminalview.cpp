@@ -10,6 +10,7 @@
 #include <QDateTime>
 #include <QFile>
 #include <QDataStream>
+#include <QTimeZone>
 
 TerminalView::TerminalView(QWidget *parent) :
     QWidget(parent),
@@ -959,6 +960,16 @@ void TerminalView::on_sendCmd_clicked()
             array.append(array_text+",");
         }
         array.append("\r\n");
+    } else if (cmds == "syncDate"){
+        auto now = std::chrono::system_clock::now();
+        auto utc_time = std::chrono::system_clock::to_time_t(now);
+
+        QTimeZone tz = QTimeZone::systemTimeZone();
+
+        int tz15Min = tz.offsetFromUtc(QDateTime::currentDateTime()) / 60 / 15;
+
+
+        array.append(getCmdHead()+"setdate,"+QString::number(utc_time)+"," + QString::number(tz15Min) + ",\r\n");
     } else {
         array.append(getCmdHead()+cmds+ "\r\n");
     }

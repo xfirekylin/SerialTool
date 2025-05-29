@@ -837,6 +837,11 @@
                </item>
                <item>
                 <property name="text">
+                 <string>syncDate</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>usbTask,disk</string>
                 </property>
                </item>
