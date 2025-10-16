@@ -722,6 +722,11 @@
                </item>
                <item>
                 <property name="text">
+                 <string>dmrAutoCall</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>resCall</string>
                 </property>
                </item>
@@ -1147,7 +1152,7 @@
                 </sizepolicy>
                </property>
                <property name="placeholderText">
-                <string>APNpwd/val</string>
+                <string>APNpwd/val/idle</string>
                </property>
               </widget>
              </item>

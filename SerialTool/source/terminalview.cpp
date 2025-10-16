@@ -960,6 +960,41 @@ void TerminalView::on_sendCmd_clicked()
             array.append(array_text+",");
         }
         array.append("\r\n");
+    } else if(cmds == "dmrAutoCall"){
+        QString cmdout = getCmdHead()+"dmrAutoCall,";
+
+        array.append(cmdout);
+
+        QTextCodec *code = QTextCodec::codecForName(m_codecName);
+
+        QByteArray array_text =code->fromUnicode(ui->APN->text());
+        if (0==array_text.length()) {
+            QMessageBox Msgbox;
+            Msgbox.setText("Please enter the duration of the outgoing call in the APN text box.");
+            Msgbox.exec();
+            return;
+        } else {
+            array.append(array_text+",");
+        }
+
+        array_text =code->fromUnicode(ui->apnUser->text());
+        if (0==array_text.length()) {
+            QMessageBox Msgbox;
+            Msgbox.setText("Please enter the duration of the incoming call in the APN user text box.");
+            Msgbox.exec();
+            return;
+        } else {
+            array.append(array_text+",");
+        }
+
+        array_text =code->fromUnicode(ui->apnPwd->text());
+        if (0==array_text.length()) {
+
+        } else {
+            array.append(array_text+",");
+        }
+
+        array.append("\r\n");
     } else if (cmds == "syncDate"){
         auto now = std::chrono::system_clock::now();
         auto utc_time = std::chrono::system_clock::to_time_t(now);
