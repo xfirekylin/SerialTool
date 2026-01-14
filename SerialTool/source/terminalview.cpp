@@ -2120,7 +2120,11 @@ void TerminalView::on_logon_clicked()
 
     int index = ui->logList->currentIndex();
 
-     array.append(getCmdHead()+"Lvo"+QString::number(index)+ "\r\n");
+    if (ui->logList->currentText() == "drvLog"){
+        array.append(getCmdHead()+"drvLog,1,\r\n");
+    } else {
+        array.append(getCmdHead()+"Lvo"+QString::number(index)+ "\r\n");
+    }
 
     sendDataRequestEx(array);
 }
@@ -2132,7 +2136,11 @@ void TerminalView::on_logOff_clicked()
 
     int index = ui->logList->currentIndex();
 
-     array.append(getCmdHead()+"Lvc"+QString::number(index)+ "\r\n");
+    if (ui->logList->currentText() == "drvLog"){
+        array.append(getCmdHead()+"drvLog,0,\r\n");
+    } else {
+        array.append(getCmdHead()+"Lvc"+QString::number(index)+ "\r\n");
+    }
 
     sendDataRequestEx(array);
 }
@@ -2245,5 +2253,21 @@ void TerminalView::on_setLang_clicked()
 
     array.append(",\r\n");
     sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_pushButton_clicked()
+{
+     QByteArray array;
+    array.append("AT+QDOWNLOAD=1\r\n");
+    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_pushButton_3_clicked()
+{
+    QByteArray array;
+   array.append("AT+POCLOG=2,0\r\n");
+   sendDataRequestEx(array);
 }
 

@@ -895,6 +895,21 @@
                  <string>factory,</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Chgstat,</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>extCharge</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>gpioCtl,1</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item row="13" column="0">
@@ -1323,6 +1338,11 @@
                <item>
                 <property name="text">
                  <string>dmr</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>drvLog</string>
                 </property>
                </item>
               </widget>
@@ -1833,6 +1853,63 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>Quectel</string>
+        </attribute>
+        <widget class="QWidget" name="horizontalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>10</y>
+           <width>251</width>
+           <height>641</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_8" columnstretch="1">
+            <property name="horizontalSpacing">
+             <number>2</number>
+            </property>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="pushButton_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>PushButton</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="pushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>downLoad</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="pushButton_3">
+              <property name="text">
+               <string>log</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -1843,7 +1920,7 @@
   <customwidget>
    <class>TextEdit</class>
    <extends>QWidget</extends>
-   <header>textedit.h</header>
+   <header location="global">textedit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
