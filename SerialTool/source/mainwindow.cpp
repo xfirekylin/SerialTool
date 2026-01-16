@@ -416,6 +416,7 @@ bool MainWindow::openComPort()
 {
     if (m_serialPort->open()) {
         connect(m_serialPort, &SerialPort::readyRead, this, &MainWindow::readPortData);
+        ui->terminal->setPortName(m_serialPort->getCurPortName());
         return true;
     }
     return false;

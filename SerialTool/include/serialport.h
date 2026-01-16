@@ -28,6 +28,7 @@ public:
     bool portStatus(QString &string);
     bool isOpen();
     void portSetDialog();
+    QString getCurPortName();
 
 signals:
     void readyRead();

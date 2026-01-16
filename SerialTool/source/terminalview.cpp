@@ -281,8 +281,12 @@ void TerminalView::setEnabled(bool status)
     // auto resend
     updateResendTimerStatus();
 }
-
+QString curPortName;
 QString TerminalView::getCmdHead(){
+
+    if (curPortName.contains("Quectel", Qt::CaseInsensitive)) {
+        return ">";
+    }
     if (ui->kHead->isChecked()){
         return ">";
     }
@@ -542,7 +546,11 @@ void TerminalView::ongpsSignalClicked(){
 
 void TerminalView::onResetBntClicked(){
     QByteArray array;
-    array.append(getCmdHead()+"reset\r\n");
+    if (curPortName.contains("Quectel", Qt::CaseInsensitive)) {
+        array.append(getCmdHead()+"103\r\n");
+    } else{
+        array.append(getCmdHead()+"reset\r\n");
+    }
     sendDataRequestEx(array);
 }
 void TerminalView::onLogATClicked(){
@@ -610,7 +618,7 @@ void TerminalView::onsetBntClicked(){
 
     QTextCodec *code = QTextCodec::codecForName(m_codecName);
 
-    array_text =code->fromUnicode(ui->APN->text());
+    array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
     if (0==array_text.length()) {
         array.append(array_text+",");
     } else {
@@ -863,6 +871,11 @@ void TerminalView::saveText(const QString &fname)
     }
 }
 
+void TerminalView::setPortName(const QString &pname)
+{
+    curPortName = pname;
+}
+
 void TerminalView::setTabsInsertSpaces(bool enable)
 {
     ui->textEditTx->setIndentationsUseTabs(!enable);
@@ -940,7 +953,7 @@ void TerminalView::on_sendCmd_clicked()
             cmdout.sprintf("autoCall,%d,%d,%d,", sendTime,sendTime,totalTime-sendTime*2);
             array.append(getCmdHead()+cmdout);
         }
-        array_text =code->fromUnicode(ui->APN->text());
+        array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
         if (0==array_text.length()) {
             QMessageBox Msgbox;
             Msgbox.setText("Please enter the group ID in the APN textbox to send calls.");
@@ -967,7 +980,7 @@ void TerminalView::on_sendCmd_clicked()
 
         QTextCodec *code = QTextCodec::codecForName(m_codecName);
 
-        QByteArray array_text =code->fromUnicode(ui->APN->text());
+        QByteArray array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
         if (0==array_text.length()) {
             QMessageBox Msgbox;
             Msgbox.setText("Please enter the duration of the outgoing call in the APN text box.");
@@ -2081,7 +2094,7 @@ void TerminalView::on_setIP_clicked()
 
     QTextCodec *code = QTextCodec::codecForName(m_codecName);
 
-    array_text =code->fromUnicode(ui->APN->text());
+    array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
     if (0!=array_text.length()) {
         array.append(array_text);
     }
@@ -2215,7 +2228,7 @@ void TerminalView::on_tmpIp_clicked()
 
      array.append("&123&");
 
-    array_text =code->fromUnicode(ui->APN->text());
+    array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
     if (0==array_text.length()) {
         QMessageBox Msgbox;
         Msgbox.setText("no ip");
@@ -2241,7 +2254,7 @@ void TerminalView::on_setLang_clicked()
 
     QTextCodec *code = QTextCodec::codecForName(m_codecName);
 
-    array_text =code->fromUnicode(ui->APN->text());
+    array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
     if (0==array_text.length()) {
         QMessageBox Msgbox;
         Msgbox.setText("input lang code in APN textbox");
@@ -2269,5 +2282,19 @@ void TerminalView::on_pushButton_3_clicked()
     QByteArray array;
    array.append("AT+POCLOG=2,0\r\n");
    sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_reset_clicked()
+{
+   QByteArray array;
+   array.append(">103\r\n");
+   sendDataRequestEx(array);
+}
+
+
+void TerminalView::on_resetBtn_clicked()
+{
+
 }
 

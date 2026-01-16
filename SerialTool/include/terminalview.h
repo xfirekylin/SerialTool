@@ -34,6 +34,7 @@ public:
     void setAutoIndent(bool enable);
     void setIndentationGuides(bool enable);
     void saveText(const QString &fname);
+    void setPortName(const QString &pname);
 
 signals:
     void sendDataRequest(const QByteArray &array);
@@ -189,6 +190,10 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_3_clicked();
+
+    void on_reset_clicked();
+
+    void on_resetBtn_clicked();
 
 private:
     enum TextCodec {

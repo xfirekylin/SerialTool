@@ -161,6 +161,11 @@ void SerialPort::portSetDialog()
     portSet.exec();
 }
 
+QString SerialPort::getCurPortName()
+{
+    return ui->portNameBox->currentText();
+}
+
 // 扫描端口
 void SerialPort::scanPort()
 {
