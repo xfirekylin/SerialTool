@@ -195,6 +195,10 @@ private slots:
 
     void on_resetBtn_clicked();
 
+    void on_sendButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     enum TextCodec {
         ASCII,
