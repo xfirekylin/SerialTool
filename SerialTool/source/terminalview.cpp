@@ -1395,6 +1395,8 @@ void TerminalView::on_logon_clicked()
         array.append(getCmdHead()+"uploadLog,1,1,\r\n");
     } else if (ui->logList->currentText() == "dmrFreq"){
         array.append(getCmdHead()+"dmrat,AT+DMRSetFreqEdit=1,\r\n");
+    } else if (ui->logList->currentText() == "assertMode"){
+        array.append(getCmdHead()+"assertMode*I0,1,\r\n");
     } else {
         array.append(getCmdHead()+"Lvo"+QString::number(index)+ "\r\n");
     }
@@ -1415,6 +1417,8 @@ void TerminalView::on_logOff_clicked()
         array.append(getCmdHead()+"uploadLog,0,\r\n");
     } else if (ui->logList->currentText() == "dmrFreq"){
         array.append(getCmdHead()+"dmrat,AT+DMRSetFreqEdit=0,\r\n");
+    } else if (ui->logList->currentText() == "assertMode"){
+        array.append(getCmdHead()+"assertMode*I0,0,\r\n");
     } else {
         array.append(getCmdHead()+"Lvc"+QString::number(index)+ "\r\n");
     }

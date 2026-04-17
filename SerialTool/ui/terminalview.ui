@@ -902,6 +902,16 @@
                  <string>dmrOwnId</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>dmrExts</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>dmrSetExts</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item row="15" column="0">
@@ -1237,6 +1247,11 @@
                <item>
                 <property name="text">
                  <string>dmrFreq</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>assertMode</string>
                 </property>
                </item>
               </widget>
