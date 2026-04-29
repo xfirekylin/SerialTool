@@ -264,6 +264,19 @@
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
+         <widget class="QCheckBox" name="checkBox">
+          <property name="geometry">
+           <rect>
+            <x>740</x>
+            <y>380</y>
+            <width>71</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>CheckBox</string>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -910,6 +923,11 @@
                <item>
                 <property name="text">
                  <string>dmrSetExts</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>getFile,d:/log.txt</string>
                 </property>
                </item>
               </widget>

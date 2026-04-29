@@ -10,6 +10,8 @@
 #include <QDateTime>
 #include <QFile>
 #include <QDataStream>
+#include <QDir>
+#include <QFileInfo>
 #include <QTimeZone>
 #include <QRandomGenerator>
 #include <QThread>
@@ -19,10 +21,18 @@ TerminalView::TerminalView(QWidget *parent) :
     ui(new Ui::TerminalView)
 {
     ui->setupUi(this);
-    lcdbuf = new uchar[240*320*2];
-    memset(lcdbuf, 0, 240*320*2);
+    m_lcdBufCapacity = 240*320*2;
+    m_lcdBufLength = m_lcdBufCapacity;
+    m_lcdBufIsJpg = false;
+    lcdbuf = new uchar[m_lcdBufCapacity];
+    memset(lcdbuf, 0, m_lcdBufCapacity);
     recvlcdline = 0;
     m_resendTimer = new QTimer;
+    m_lcdBinTimer = new QTimer;
+    m_lcdBinTimer->setSingleShot(true);
+    m_lcdBinExpectedLength = 0;
+    m_lcdBinMode = 0;
+    m_lcdBinReceiving = false;
     m_asciiBuf = new QByteArray;
 
     ui->textEditRx->setReadOnly(true);
@@ -35,6 +45,9 @@ TerminalView::TerminalView(QWidget *parent) :
     connect(ui->sendButton, &QPushButton::clicked, this, &TerminalView::onSendButtonClicked);
     connect(ui->resendBox, &QCheckBox::stateChanged, this, &TerminalView::updateResendTimerStatus);
     QObject::connect(m_resendTimer, &QTimer::timeout, this, &TerminalView::sendData);
+    QObject::connect(m_lcdBinTimer, &QTimer::timeout, this, [this]() {
+        cancelLcdBinaryReceive();
+    });
     connect(ui->resendIntervalBox, SIGNAL(valueChanged(int)), this, SLOT(setResendInterval(int)));
     connect(ui->historyBox, SIGNAL(activated(const QString &)), this, SLOT(onHistoryBoxChanged(const QString &)));
     connect(ui->wrapLineBox, SIGNAL(stateChanged(int)), this, SLOT(onWrapBoxChanged(int)));
@@ -80,7 +93,9 @@ TerminalView::~TerminalView()
 {
     delete ui;
     delete m_resendTimer;
+    delete m_lcdBinTimer;
     delete m_asciiBuf;
+    delete[] lcdbuf;
 }
 
 void TerminalView::keyPressEvent(QKeyEvent *event)
@@ -190,7 +205,17 @@ void TerminalView::setHighlight(const QString &language)
 int tvTextEnd=1;
 void TerminalView::append(const QByteArray &array)
 {
+    m_lcdBinPendingData.append(array);
+    processLcdBinaryData();
+}
+
+void TerminalView::appendTextData(const QByteArray &array)
+{
     QString string;
+
+    if (array.isEmpty()) {
+        return;
+    }
 
     if (ui->portReadAscii->isChecked()) {
         arrayToString(string, array);
@@ -229,6 +254,237 @@ void TerminalView::append(const QByteArray &array)
     } else {
         tvTextEnd = 0;
     }
+}
+
+void TerminalView::processLcdBinaryData()
+{
+    const QByteArray prefix("atBinDat:");
+
+    while (!m_lcdBinPendingData.isEmpty()) {
+        if (m_lcdBinReceiving) {
+            const int need = m_lcdBinExpectedLength - m_lcdBinData.size();
+            const int copyLen = qMin(need, m_lcdBinPendingData.size());
+            m_lcdBinData.append(m_lcdBinPendingData.constData(), copyLen);
+            m_lcdBinPendingData.remove(0, copyLen);
+
+            if (m_lcdBinData.size() < m_lcdBinExpectedLength) {
+                qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+                         << "recv len:" << m_lcdBinData.size()
+                         << "total len:" << m_lcdBinExpectedLength;
+                return;
+            }
+
+            m_lcdBinTimer->stop();
+            if (m_lcdBinMode == 1) {
+                saveLcdBinaryFile();
+            } else {
+                ensureLcdBufCapacity(m_lcdBinExpectedLength);
+                memcpy(lcdbuf, m_lcdBinData.constData(), m_lcdBinExpectedLength);
+                m_lcdBufLength = m_lcdBinExpectedLength;
+                m_lcdBufIsJpg = true;
+                displayLcdScreen();
+            }
+            m_lcdBinData.clear();
+            m_lcdBinExpectedLength = 0;
+            m_lcdBinMode = 0;
+            m_lcdBinFilePath.clear();
+            m_lcdBinReceiving = false;
+            continue;
+        }
+
+        const int idx = m_lcdBinPendingData.indexOf(prefix);
+        if (idx < 0) {
+            const int keep = lcdBinaryPrefixKeepSize(m_lcdBinPendingData);
+            const int textLen = m_lcdBinPendingData.size() - keep;
+            if (textLen > 0) {
+                appendTextData(m_lcdBinPendingData.left(textLen));
+                m_lcdBinPendingData.remove(0, textLen);
+            }
+            return;
+        }
+
+        if (idx > 0) {
+            appendTextData(m_lcdBinPendingData.left(idx));
+            m_lcdBinPendingData.remove(0, idx);
+        }
+
+        const int headerStart = prefix.size();
+        const int headerEnd = m_lcdBinPendingData.indexOf(",\r\n", headerStart);
+        if (headerEnd < 0) {
+            return;
+        }
+
+        const QString header = QString::fromLatin1(m_lcdBinPendingData.mid(headerStart, headerEnd - headerStart));
+        const QStringList fields = header.split(",");
+        if (fields.size() < 2) {
+            appendTextData(m_lcdBinPendingData.left(1));
+            m_lcdBinPendingData.remove(0, 1);
+            continue;
+        }
+
+        bool ok = false;
+        const int mode = fields.at(0).toInt(&ok);
+        if (!ok || (mode != 0 && mode != 1)) {
+            appendTextData(m_lcdBinPendingData.left(1));
+            m_lcdBinPendingData.remove(0, 1);
+            continue;
+        }
+
+        const int len = fields.at(1).toInt(&ok);
+        const QString path = fields.size() >= 3 ? fields.at(2) : QString();
+        if (!ok || len <= 0 || (mode == 1 && path.isEmpty())) {
+            appendTextData(m_lcdBinPendingData.left(1));
+            m_lcdBinPendingData.remove(0, 1);
+            continue;
+        }
+
+        const int headerLen = headerEnd + 3;
+        appendTextData(m_lcdBinPendingData.left(headerLen));
+        m_lcdBinPendingData.remove(0, headerLen);
+        startLcdBinaryReceive(len, mode, path);
+    }
+}
+
+void TerminalView::startLcdBinaryReceive(int len, int mode, const QString &path)
+{
+    m_lcdBinData.clear();
+    m_lcdBinExpectedLength = len;
+    m_lcdBinMode = mode;
+    m_lcdBinFilePath = path;
+    m_lcdBinReceiving = true;
+    m_lcdBinTimer->start(2000);
+}
+
+void TerminalView::cancelLcdBinaryReceive()
+{
+    m_lcdBinTimer->stop();
+    m_lcdBinData.clear();
+    m_lcdBinExpectedLength = 0;
+    m_lcdBinMode = 0;
+    m_lcdBinFilePath.clear();
+    m_lcdBinReceiving = false;
+    m_lcdBinPendingData.clear();
+}
+
+int TerminalView::lcdBinaryPrefixKeepSize(const QByteArray &array) const
+{
+    const QByteArray prefix("atBinDat:");
+    const int maxKeep = qMin(prefix.size() - 1, array.size());
+
+    for (int keep = maxKeep; keep > 0; --keep) {
+        const int keepStart = array.size() - keep;
+        if ((keepStart == 0 || array.at(keepStart - 1) == '\n' || array.at(keepStart - 1) == '\r')
+                && array.right(keep) == prefix.left(keep)) {
+            return keep;
+        }
+    }
+
+    return 0;
+}
+
+void TerminalView::ensureLcdBufCapacity(int len)
+{
+    if (len <= m_lcdBufCapacity) {
+        return;
+    }
+
+    delete[] lcdbuf;
+    m_lcdBufCapacity = len;
+    lcdbuf = new uchar[m_lcdBufCapacity];
+}
+
+void TerminalView::saveLcdBinaryFile()
+{
+    const QString savePath = lcdBinaryPath(m_lcdBinFilePath);
+    QFileInfo fileInfo(savePath);
+    QDir().mkpath(fileInfo.absolutePath());
+
+    QFile file(savePath);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+                 << "save binary file failed:" << savePath;
+        return;
+    }
+
+    file.write(m_lcdBinData);
+    file.close();
+    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+             << "save binary file:" << savePath
+             << "len:" << m_lcdBinData.size();
+}
+
+QString TerminalView::lcdBinaryPath(const QString &path, QString *cleanRelativePath) const
+{
+    QString cleanPath = path.trimmed();
+    cleanPath.replace("\\", "/");
+    cleanPath.replace(":", "_");
+
+    QStringList cleanParts;
+    const QStringList parts = cleanPath.split("/", QString::SkipEmptyParts);
+    for (int i = 0; i < parts.size(); ++i) {
+        if (parts.at(i) == "." || parts.at(i) == "..") {
+            continue;
+        }
+        cleanParts.append(parts.at(i));
+    }
+
+    if (cleanParts.isEmpty()) {
+        cleanParts.append(QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss_zzz.bin"));
+    }
+
+    const QString relativePath = cleanParts.join("/");
+    if (cleanRelativePath) {
+        *cleanRelativePath = relativePath;
+    }
+
+    return QDir("d:/t107").filePath(relativePath);
+}
+
+void TerminalView::sendLcdBinaryFile(const QString &pcPath, const QString &path)
+{
+    const QString filePath = pcPath.trimmed();
+    const QString sendPath = path.trimmed();
+    if (filePath.isEmpty() || sendPath.isEmpty()) {
+        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+                 << "invalid sendFile path:" << pcPath << path;
+        return;
+    }
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+                 << "open binary file failed:" << filePath;
+        return;
+    }
+
+    const QByteArray fileData = file.readAll();
+    file.close();
+    if (fileData.isEmpty()) {
+        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+                 << "binary file is empty:" << filePath;
+        return;
+    }
+
+    QByteArray header;
+    header.append(getCmdHead());
+    header.append("atBinDat:1,");
+    header.append(QByteArray::number(fileData.size()));
+    header.append(",");
+    header.append(sendPath.toLatin1());
+    header.append(",\r\n");
+
+    sendDataRequestEx(header);
+    QThread::msleep(20);
+    for (int offset = 0; offset < fileData.size(); offset += 200) {
+        emit sendDataRequest(fileData.mid(offset, 200));
+        if (offset + 200 < fileData.size()) {
+            QThread::msleep(20);
+        }
+    }
+
+    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+             << "send binary file:" << filePath
+             << "len:" << fileData.size();
 }
 
 void TerminalView::sendDataRequestEx(const QByteArray &array)
@@ -314,6 +570,31 @@ void TerminalView::sendData()
         if (ui->kHead->isChecked()){
             if (in.startsWith("AT##INRICO>"))
                 in = in.mid(strlen("AT##INRICO"));
+        }
+
+        QString sendFileArgs = ui->textEditTx->text().trimmed();
+        if (sendFileArgs.startsWith("AT##INRICO>")){
+            sendFileArgs = sendFileArgs.mid(strlen("AT##INRICO>"));
+        } else if (sendFileArgs.startsWith("AT##INRICO")){
+            sendFileArgs = sendFileArgs.mid(strlen("AT##INRICO"));
+        }
+        if (sendFileArgs.startsWith(">")){
+            sendFileArgs = sendFileArgs.mid(1);
+        }
+        if (sendFileArgs.startsWith("sendFile,")){
+            sendFileArgs = sendFileArgs.mid(strlen("sendFile,"));
+            if (sendFileArgs.endsWith(",")){
+                sendFileArgs.chop(1);
+            }
+
+            const QStringList fields = sendFileArgs.split(",");
+            if (fields.size() >= 2){
+                sendLcdBinaryFile(fields.at(0), fields.at(1));
+            } else {
+                qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+                         << "invalid sendFile cmd:" << in;
+            }
+            return;
         }
 
         array = code->fromUnicode(in);
@@ -1283,6 +1564,8 @@ void TerminalView::convertHexStr2Lcdmem(const QString &src, int offset){
         len = ba.size();
     }
 
+    m_lcdBufIsJpg = false;
+    m_lcdBufLength = 240*320*2;
     recvlcdline++;
     memcpy(lcdbuf+offset, ba.data(), len);
     if (153400==offset){
@@ -1293,9 +1576,18 @@ void TerminalView::convertHexStr2Lcdmem(const QString &src, int offset){
 
 void TerminalView::displayLcdScreen()
 {
-    // Load the image data into the bytes array
+    QImage image;
 
-    QImage image((uchar *)lcdbuf, 240, 320, QImage::Format_RGB16);
+    if (m_lcdBufIsJpg) {
+        image.loadFromData(lcdbuf, m_lcdBufLength);
+    } else {
+        image = QImage((uchar *)lcdbuf, 240, 320, QImage::Format_RGB16);
+    }
+
+    if (image.isNull()) {
+        return;
+    }
+
     ui->lcd->setPixmap(QPixmap::fromImage(image));
     ui->lcd->show();
 }

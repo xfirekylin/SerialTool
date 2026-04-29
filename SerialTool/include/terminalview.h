@@ -1,6 +1,7 @@
 #ifndef TERMINALVIEW_H
 #define TERMINALVIEW_H
 
+#include <QByteArray>
 #include <QWidget>
 
 namespace Ui {
@@ -9,7 +10,6 @@ class TerminalView;
 
 class QTimer;
 class QSettings;
-class QByteArray;
 
 class TerminalView : public QWidget
 {
@@ -57,6 +57,15 @@ private:
     void convertHexStr2Lcdmem(const QString &hex, int offset);
     void displayLcdScreen();
     void SaveBinFile();
+    void appendTextData(const QByteArray &array);
+    void processLcdBinaryData();
+    void startLcdBinaryReceive(int len, int mode, const QString &path);
+    void cancelLcdBinaryReceive();
+    int lcdBinaryPrefixKeepSize(const QByteArray &array) const;
+    void ensureLcdBufCapacity(int len);
+    void saveLcdBinaryFile();
+    QString lcdBinaryPath(const QString &path, QString *cleanRelativePath = 0) const;
+    void sendLcdBinaryFile(const QString &pcPath, const QString &path);
 
 
 private slots:
@@ -215,8 +224,18 @@ private:
     enum TextCodec m_textCodec;
     QByteArray m_codecName;
     uchar *lcdbuf;
+    int m_lcdBufCapacity;
+    int m_lcdBufLength;
+    bool m_lcdBufIsJpg;
     QString lcdLineStr;
     int recvlcdline;
+    QTimer *m_lcdBinTimer;
+    QByteArray m_lcdBinPendingData;
+    QByteArray m_lcdBinData;
+    int m_lcdBinExpectedLength;
+    int m_lcdBinMode;
+    QString m_lcdBinFilePath;
+    bool m_lcdBinReceiving;
 };
 
 #endif // TERMINALVIEW_H
