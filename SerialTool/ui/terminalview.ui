@@ -930,6 +930,26 @@
                  <string>getFile,d:/log.txt</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>listFiles,d:/dmr</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>dmrRecvSms</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>dmrRecvGps</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>dmrReportDat</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item row="15" column="0">

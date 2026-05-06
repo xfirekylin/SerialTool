@@ -1324,6 +1324,12 @@ void TerminalView::on_sendCmd_clicked()
                 return;
             }
         }
+    } else if (cmds == "dmrRecvSms") {
+        array.append(getCmdHead()+ "dmrAt2ui,+DMRreadSms:1,12,34,2,3800,\r\n");
+    } else if (cmds == "dmrRecvGps"){
+        array.append(getCmdHead()+ "dmrAt2ui,+DMRcsbkRead:0000019542167772156C006E0067006C00610074003100310034002E00310036003600380031003000380032007C00320032002E0035003600370032003900330034003800,\r\n");
+    } else if (cmds == "dmrReportDat"){
+        array.append(getCmdHead() + "poc>+PushReadCps:22,\r\n");
     } else {
         array.append(getCmdHead()+cmds+ "\r\n");
     }
