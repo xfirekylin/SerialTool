@@ -902,7 +902,7 @@ void TerminalView::onsetBntClicked(){
     QTextCodec *code = QTextCodec::codecForName(m_codecName);
 
     array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
-    if (0==array_text.length()) {
+    if (0!=array_text.length()) {
         array.append(array_text+",");
     } else {
         array.append(",");
@@ -1751,6 +1751,7 @@ void TerminalView::on_memGetSet_clicked()
     QByteArray array_text;
     QByteArray array_text2;
     QTextCodec *code = QTextCodec::codecForName(m_codecName);
+    QByteArray array_text3 =code->fromUnicode(ui->APN->currentText().toUtf8());
 
     array_text =code->fromUnicode(ui->apnUser->text());
     if (0==array_text.length()) {
@@ -1762,7 +1763,11 @@ void TerminalView::on_memGetSet_clicked()
     array.append(getCmdHead());
     array_text2 =code->fromUnicode(ui->apnPwd->text());
     if (0==array_text2.length()) {
-        array.append("memGet," + array_text+ "," + QString::number(varType) + "\r\n");
+        if (array_text3.isEmpty()) {
+            array.append("memGet," + array_text+ "," + QString::number(varType) + "\r\n");
+        } else {
+            array.append("memGet," + array_text+ "," + QString::number(qAbs(array_text3.toInt())) + "\r\n");
+        }
     } else {
         array.append("memSet," + array_text+ "," + QString::number(varType) + "," + array_text2 + "\r\n");
     }
@@ -1907,6 +1912,11 @@ void TerminalView::on_pushButton_2_clicked()
         array.append(getCmdHead()+"dmrat,AT+DMRRadioId=" + QString::number(randomValue)+",\r\n");
         sendDataRequestEx(array);
     });
+
+}
+
+void TerminalView::on_setBtn_clicked()
+{
 
 }
 

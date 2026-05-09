@@ -208,6 +208,8 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_setBtn_clicked();
+
 private:
     enum TextCodec {
         ASCII,
