@@ -1513,6 +1513,19 @@
                </property>
               </widget>
              </item>
+             <item row="18" column="1">
+              <widget class="QPushButton" name="audioStat">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>AudioState</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>

@@ -210,6 +210,8 @@ private slots:
 
     void on_setBtn_clicked();
 
+    void on_audioStat_clicked();
+
 private:
     enum TextCodec {
         ASCII,

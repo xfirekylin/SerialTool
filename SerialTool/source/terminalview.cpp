@@ -12,6 +12,10 @@
 #include <QDataStream>
 #include <QDir>
 #include <QFileInfo>
+#include <QCompleter>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QSortFilterProxyModel>
 #include <QTimeZone>
 #include <QRandomGenerator>
 #include <QThread>
@@ -37,6 +41,26 @@ TerminalView::TerminalView(QWidget *parent) :
 
     ui->textEditRx->setReadOnly(true);
     ui->textEditTx->setWrap(true); // Send area auto wrap.
+    ui->cmdlist->setEditable(true);
+    ui->cmdlist->setInsertPolicy(QComboBox::NoInsert);
+    ui->cmdlist->lineEdit()->setPlaceholderText("Search command");
+
+    QSortFilterProxyModel *cmdFilterModel = new QSortFilterProxyModel(ui->cmdlist);
+    cmdFilterModel->setSourceModel(ui->cmdlist->model());
+    cmdFilterModel->setFilterKeyColumn(0);
+    cmdFilterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+    QCompleter *cmdCompleter = new QCompleter(cmdFilterModel, ui->cmdlist);
+    cmdCompleter->setCompletionMode(QCompleter::PopupCompletion);
+    cmdCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    cmdCompleter->setFilterMode(Qt::MatchContains);
+    ui->cmdlist->setCompleter(cmdCompleter);
+    connect(ui->cmdlist->lineEdit(), &QLineEdit::textEdited, this, [this, cmdFilterModel](const QString &text) {
+        cmdFilterModel->setFilterFixedString(text);
+        if (!text.isEmpty()) {
+            ui->cmdlist->completer()->complete();
+        }
+    });
 
     setTextCodec("GB-2312"); // default
 
@@ -1918,5 +1942,14 @@ void TerminalView::on_pushButton_2_clicked()
 void TerminalView::on_setBtn_clicked()
 {
 
+}
+
+
+void TerminalView::on_audioStat_clicked()
+{
+    QByteArray array;
+
+    array.append(getCmdHead()+"Playstat\r\n");
+    sendDataRequestEx(array);
 }
 
