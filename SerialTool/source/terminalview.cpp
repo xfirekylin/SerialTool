@@ -1787,7 +1787,7 @@ void TerminalView::on_memGetSet_clicked()
     array.append(getCmdHead());
     array_text2 =code->fromUnicode(ui->apnPwd->text());
     if (0==array_text2.length()) {
-        if (array_text3.isEmpty()) {
+        if (array_text3.isEmpty() || !QRegExp("^\\d+$").exactMatch(QString::fromLatin1(array_text3))) {
             array.append("memGet," + array_text+ "," + QString::number(varType) + "\r\n");
         } else {
             array.append("memGet," + array_text+ "," + QString::number(qAbs(array_text3.toInt())) + "\r\n");
