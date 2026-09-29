@@ -32,6 +32,9 @@ TerminalView::TerminalView(QWidget *parent) :
     memset(lcdbuf, 0, m_lcdBufCapacity);
     recvlcdline = 0;
     m_resendTimer = new QTimer;
+    m_lcdAutoRefreshTimer = new QTimer;
+    m_lcdAutoRefreshTimer->setSingleShot(true);
+    connect(m_lcdAutoRefreshTimer, &QTimer::timeout, this, &TerminalView::on_lcdfresh_clicked);
     m_lcdBinTimer = new QTimer;
     m_lcdBinTimer->setSingleShot(true);
     m_lcdBinExpectedLength = 0;
@@ -117,6 +120,7 @@ TerminalView::~TerminalView()
 {
     delete ui;
     delete m_resendTimer;
+    delete m_lcdAutoRefreshTimer;
     delete m_lcdBinTimer;
     delete m_asciiBuf;
     delete[] lcdbuf;
@@ -1368,223 +1372,149 @@ void TerminalView::on_relogin_clicked()
     sendDataRequestEx(array);
 }
 
-void TerminalView::on_keyMenu_clicked()
+// 发送按键消息；按键弹起消息发出后15ms自动执行refresh按钮的操作获取屏幕
+void TerminalView::sendKeySimu(const char *key)
 {
     QByteArray array;
-
     array.append(getCmdHead());
-    array.append("keySimu,s"+getKeyEventType());
+    array.append("keySimu," + QByteArray(key) + getKeyEventType().toLatin1());
     sendDataRequestEx(array);
+    m_lcdAutoRefreshTimer->start(15);
+}
 
+void TerminalView::on_keyMenu_clicked()
+{
+    sendKeySimu("s");
 }
 
 void TerminalView::on_keyUp_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,u"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("u");
 }
-
 
 void TerminalView::on_keyCancel_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,c"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("c");
 }
 
 void TerminalView::on_keyLeft_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,L"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("L");
 }
 
 void TerminalView::on_keyOk_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,o"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("o");
 }
 
 void TerminalView::on_keyRight_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,r"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("r");
 }
 
 void TerminalView::on_keyCall_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,g"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("g");
 }
 
 void TerminalView::on_keyDown_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,d"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("d");
 }
 
 void TerminalView::on_keyRed_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,e"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("e");
 }
 
 void TerminalView::on_key1_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,1"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("1");
 }
 
 void TerminalView::on_key2_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,2"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("2");
 }
 
 void TerminalView::on_key3_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,3"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("3");
 }
 
 void TerminalView::on_key5_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,5"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("5");
 }
 
 void TerminalView::on_key4_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,4"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("4");
 }
 
 void TerminalView::on_key6_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,6"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("6");
 }
 
 void TerminalView::on_key7_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,7"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("7");
 }
 
 void TerminalView::on_key8_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,8"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("8");
 }
 
 void TerminalView::on_key9_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,9"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("9");
 }
 
 void TerminalView::on_keyStar_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,*"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("*");
 }
 
 void TerminalView::on_key0_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,0"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("0");
 }
 
 void TerminalView::on_keyHash_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,#"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("#");
 }
 
 void TerminalView::on_keyPtt_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,p"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("p");
 }
 
 void TerminalView::on_keySos_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,a"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("a");
 }
 
 void TerminalView::on_keyHome_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,h"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("h");
 }
 
 void TerminalView::on_keyF1_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,x"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("x");
 }
 
 void TerminalView::on_keyF2_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,y"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("y");
 }
 
 void TerminalView::on_keyF3_clicked()
 {
-    QByteArray array;
-    array.append(getCmdHead());
-    array.append("keySimu,z,"+getKeyEventType());
-    sendDataRequestEx(array);
+    sendKeySimu("z,");
 }
 
 void TerminalView::convertHexStr2Lcdmem(const QString &src, int offset){
@@ -1751,6 +1681,9 @@ void TerminalView::on_logOff_clicked()
 
 void TerminalView::on_lcdClear_clicked()
 {
+      // 收到的是jpg图片时，清除后需按RGB16裸数据刷新，否则loadFromData解码失败导致clear无效
+      m_lcdBufIsJpg = false;
+      m_lcdBufLength = 240*320*2;
       memset(lcdbuf, 0x12, 240*320*2);
       displayLcdScreen();
 }
@@ -1821,7 +1754,13 @@ void TerminalView::on_tmpIp_clicked()
         array.append(array_text);
     }
 
-     array.append("&123&");
+    array_text =code->fromUnicode(ui->apnPwd->text());
+    if (0==array_text.length()) {
+        array.append("&123456&");
+    } else {
+        array.append("&"+array_text+"&");
+    }
+
 
     array_text =code->fromUnicode(ui->APN->currentText().toUtf8());
     if (0==array_text.length()) {

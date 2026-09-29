@@ -52,6 +52,7 @@ private:
     void arrayToDualByte(QString &str, const QByteArray &array);
     void arrayToASCII(QString &str, const QByteArray &array);
     void sendDataRequestEx(const QByteArray &array);
+    void sendKeySimu(const char *key);
     QString getCmdHead();
     QString getKeyEventType();
     void convertHexStr2Lcdmem(const QString &hex, int offset);
@@ -233,6 +234,7 @@ private:
     bool m_lcdBufIsJpg;
     QString lcdLineStr;
     int recvlcdline;
+    QTimer *m_lcdAutoRefreshTimer;
     QTimer *m_lcdBinTimer;
     QByteArray m_lcdBinPendingData;
     QByteArray m_lcdBinData;

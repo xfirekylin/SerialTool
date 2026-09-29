@@ -1241,6 +1241,11 @@
                </item>
                <item>
                 <property name="text">
+                 <string>noise</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>poc</string>
                 </property>
                </item>
