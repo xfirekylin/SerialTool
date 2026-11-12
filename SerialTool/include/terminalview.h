@@ -10,6 +10,7 @@ class TerminalView;
 
 class QTimer;
 class QSettings;
+class WifiDialog;
 
 class TerminalView : public QWidget
 {
@@ -242,6 +243,7 @@ private:
     int m_lcdBinMode;
     QString m_lcdBinFilePath;
     bool m_lcdBinReceiving;
+    WifiDialog *m_wifiDlg = 0;
 };
 
 #endif // TERMINALVIEW_H

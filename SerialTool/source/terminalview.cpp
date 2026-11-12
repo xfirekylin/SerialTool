@@ -1,5 +1,6 @@
 #include "terminalview.h"
 #include "ui_terminalview.h"
+#include "wifidialog.h"
 #include <QSettings>
 #include <QTextCodec>
 #include <QTimer>
@@ -243,6 +244,9 @@ void TerminalView::appendTextData(const QByteArray &array)
 
     if (array.isEmpty()) {
         return;
+    }
+    if (m_wifiDlg) {
+        m_wifiDlg->feedData(array);
     }
 
     if (ui->portReadAscii->isChecked()) {
@@ -1233,6 +1237,16 @@ void TerminalView::on_sendCmd_clicked()
     QByteArray array;
 
     QByteArray cmds = ui->cmdlist->currentText().toUtf8();
+    if (cmds == "wifi") {
+        WifiDialog dlg(getCmdHead(), m_codecName, this);
+        connect(&dlg, &WifiDialog::sendDataRequest, this, [this](const QByteArray &data) {
+            sendDataRequestEx(data);
+        });
+        m_wifiDlg = &dlg;
+        dlg.exec();
+        m_wifiDlg = 0;
+        return;
+    }
     if (cmds == "simKey"){
         array.append(getCmdHead()+"simKey,2,100\r\n");
     }else if (cmds == "assertMode"){

@@ -765,4 +765,95 @@ Please check the port number.</source>
         <translation>复制C语言数组</translation>
     </message>
 </context>
+<context>
+    <name>WifiDialog</name>
+    <message>
+        <source>WiFi</source>
+        <translation>WiFi</translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation>开</translation>
+    </message>
+    <message>
+        <source>Off</source>
+        <translation>关</translation>
+    </message>
+    <message>
+        <source>Preset WiFi</source>
+        <translation>预置WiFi</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>添加</translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation>刷新</translation>
+    </message>
+    <message>
+        <source>WiFi Name</source>
+        <translation>WiFi名称</translation>
+    </message>
+    <message>
+        <source>Signal</source>
+        <translation>信号</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>状态</translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation>连接</translation>
+    </message>
+    <message>
+        <source>Disconnect</source>
+        <translation>断开</translation>
+    </message>
+    <message>
+        <source>Connected</source>
+        <translation>已连接</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <translation>未连接</translation>
+    </message>
+    <message>
+        <source>Add Preset WiFi</source>
+        <translation>添加预置WiFi</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名称</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <source>Operation failed</source>
+        <translation>操作失败</translation>
+    </message>
+    <message>
+        <source>Name is empty</source>
+        <translation>名称为空</translation>
+    </message>
+    <message>
+        <source>Name is too long</source>
+        <translation>名称过长</translation>
+    </message>
+    <message>
+        <source>Password length must be 8-63</source>
+        <translation>密码长度必须为8-63</translation>
+    </message>
+</context>
 </TS>

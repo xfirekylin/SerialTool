@@ -47,6 +47,7 @@ SOURCES += \
     source/defaultconfig.cpp \
     source/oscopetimestamp.cpp \
     source/terminalview.cpp \
+    source/wifidialog.cpp \
     source/serialport.cpp \
     source/pointdatabuffer.cpp \
     source/valuedisplay.cpp \
@@ -70,6 +71,7 @@ HEADERS  += \
     include/defaultconfig.h \
     include/oscopetimestamp.h \
     include/terminalview.h \
+    include/wifidialog.h \
     include/serialport.h \
     include/pointdatabuffer.h \
     include/valuedisplay.h \

@@ -654,6 +654,11 @@
                </item>
                <item>
                 <property name="text">
+                 <string>wifi</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>lcd</string>
                 </property>
                </item>
